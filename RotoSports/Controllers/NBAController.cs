@@ -10,14 +10,14 @@ using RotoSports.Models;
 
 namespace RotoSports.Controllers
 {
-    public class NBAsController : Controller
+    public class NBAController : Controller
     {
         private RotoSportsDB db = new RotoSportsDB();
 
         // GET: NBAs
         public ActionResult Index()
         {
-            return View(db.NBAs.ToList());
+            return View(db.NBA.ToList());
         }
 
         // GET: NBAs/Details/5
@@ -27,7 +27,7 @@ namespace RotoSports.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            NBA nBA = db.NBAs.Find(id);
+            NBA nBA = db.NBA.Find(id);
             if (nBA == null)
             {
                 return HttpNotFound();
@@ -50,7 +50,7 @@ namespace RotoSports.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.NBAs.Add(nBA);
+                db.NBA.Add(nBA);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -65,7 +65,7 @@ namespace RotoSports.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            NBA nBA = db.NBAs.Find(id);
+            NBA nBA = db.NBA.Find(id);
             if (nBA == null)
             {
                 return HttpNotFound();
@@ -96,7 +96,7 @@ namespace RotoSports.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            NBA nBA = db.NBAs.Find(id);
+            NBA nBA = db.NBA.Find(id);
             if (nBA == null)
             {
                 return HttpNotFound();
@@ -109,8 +109,8 @@ namespace RotoSports.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            NBA nBA = db.NBAs.Find(id);
-            db.NBAs.Remove(nBA);
+            NBA nBA = db.NBA.Find(id);
+            db.NBA.Remove(nBA);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

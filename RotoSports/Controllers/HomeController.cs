@@ -13,6 +13,11 @@ namespace RotoSports.Controllers
             return View();
         }
 
+        public ActionResult InvalidRequest()
+        {
+            return View();
+        }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

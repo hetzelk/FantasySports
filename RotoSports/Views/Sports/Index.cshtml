@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "RotoSports Home Page";
+}
+
+<div class="jumbotron">
+    <h1>RotoSports</h1>
+    <p class="lead">Pick the sport you'd like to add a file to.</p>
+    <br />
+    <a href="@Url.Action("Create", "CSVFiles", new { sport = "NFL" })" class="btn btn-primary btn-lg">NFL</a>
+    <a href="@Url.Action("Create", "CSVFiles", new { sport = "NBA" })" class="btn btn-primary btn-lg">NBA</a>
+    <a href="@Url.Action("Create", "CSVFiles", new { sport = "MLB" })" class="btn btn-primary btn-lg">MLB</a>
+    <a href="@Url.Action("Create", "CSVFiles", new { sport = "PGA" })" class="btn btn-primary btn-lg">PGA</a>
+    <a href="@Url.Action("Create", "CSVFiles", new { sport = "NHL" })" class="btn btn-primary btn-lg">NHL</a>
+    <a href="@Url.Action("Create", "CSVFiles", new { sport = "CBB" })" class="btn btn-primary btn-lg">CBB</a>
+    <a href="@Url.Action("Create", "CSVFiles", new { sport = "NAS" })" class="btn btn-primary btn-lg">NAS</a>
+    <a href="@Url.Action("Create", "CSVFiles", new { sport = "SOC" })" class="btn btn-primary btn-lg">SOC</a>
+    <a href="@Url.Action("Create", "CSVFiles", new { sport = "MMA" })" class="btn btn-primary btn-lg">MMA</a>
+    <a href="@Url.Action("Create", "CSVFiles", new { sport = "eSports" })" class="btn btn-primary btn-lg">eSports</a>
+</div>
+

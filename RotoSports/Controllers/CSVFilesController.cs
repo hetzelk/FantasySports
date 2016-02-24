@@ -7,37 +7,60 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using RotoSports.Models;
+using Microsoft.AspNet.Identity;
 
 namespace RotoSports.Controllers
 {
     public class CSVFilesController : Controller
     {
         private RotoSportsDB db = new RotoSportsDB();
+        private ApplicationDbContext context = new ApplicationDbContext();
 
         // GET: CSVFiles
         public ActionResult Index()
         {
-            return View(db.CSVFiles.ToList());
+            var UserID = User.Identity.GetUserId();
+            ViewBag.UserId = UserID;
+            List<CSVFiles> MyFiles = new List<CSVFiles>();
+            foreach (CSVFiles eachFIle in db.CSVFiles)
+            {
+                if (eachFIle.UserId != UserID)
+                {
+                    //do nothing
+                }
+                else
+                {
+                    MyFiles.Add(eachFIle);
+                }
+            }
+            return View(MyFiles);
         }
 
         // GET: CSVFiles/Details/5
         public ActionResult Details(int? id)
         {
+            CSVFiles thisCSVfile = db.CSVFiles.Find(id);
+
+            string[] allLines = thisCSVfile.File.Split(new string[] { "*/*" }, StringSplitOptions.None);
+
+            ViewBag.AllLines = allLines;
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("InvalidRequest", "Home");
             }
-            CSVFiles cSVFiles = db.CSVFiles.Find(id);
-            if (cSVFiles == null)
+            if (thisCSVfile == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("InvalidRequest", "Home");
             }
-            return View(cSVFiles);
+            return View(thisCSVfile);
         }
 
         // GET: CSVFiles/Create
-        public ActionResult Create()
+        public ActionResult Create(string sport)
         {
+            var UserID = User.Identity.GetUserId();
+            ViewBag.UserId = UserID;
+            ViewBag.SportName = sport;
             return View();
         }
 
@@ -46,8 +69,16 @@ namespace RotoSports.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,UserId,Title,Sport,File")] CSVFiles cSVFiles)
+        public ActionResult Create([Bind(Include = "ID,UserId,Title,Sport,Details,File")] CSVFiles cSVFiles)
         {
+            string[] lines = cSVFiles.File.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            string endFile = "";
+            foreach (string line in lines)
+            {
+                string newLine = line + "*/*";
+                endFile += newLine;
+            }
+            cSVFiles.File = endFile;
             if (ModelState.IsValid)
             {
                 db.CSVFiles.Add(cSVFiles);
@@ -78,8 +109,23 @@ namespace RotoSports.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,UserId,Title,Sport,File")] CSVFiles cSVFiles)
+        public ActionResult Edit([Bind(Include = "ID,UserId,Title,Sport,Details,File")] CSVFiles cSVFiles)
         {
+            string[] lines = cSVFiles.File.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            string endFile = "";
+            if(lines.Length == 1)
+            {
+                endFile = lines[0];
+            }
+            else
+            {
+                foreach (string line in lines)
+                {
+                    string newLine = line + "*/*";
+                    endFile += newLine;
+                }
+            }
+            cSVFiles.File = endFile;
             if (ModelState.IsValid)
             {
                 db.Entry(cSVFiles).State = EntityState.Modified;
