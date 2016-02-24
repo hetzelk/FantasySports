@@ -168,14 +168,20 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CSVFilesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\NBAsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CSVFiles.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\NBA.cs" />
+    <Compile Include="Models\RotoSportsDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -234,6 +240,17 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\CSVFiles\Create.cshtml" />
+    <Content Include="Views\CSVFiles\Delete.cshtml" />
+    <Content Include="Views\CSVFiles\Details.cshtml" />
+    <Content Include="Views\CSVFiles\Edit.cshtml" />
+    <Content Include="Views\CSVFiles\Index.cshtml" />
+    <Content Include="Views\Home\Sports.cshtml" />
+    <Content Include="Views\NBAs\Create.cshtml" />
+    <Content Include="Views\NBAs\Delete.cshtml" />
+    <Content Include="Views\NBAs\Details.cshtml" />
+    <Content Include="Views\NBAs\Edit.cshtml" />
+    <Content Include="Views\NBAs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
