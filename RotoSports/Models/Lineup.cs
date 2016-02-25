@@ -9,6 +9,7 @@ namespace RotoSports.Models
     {
         public int ID { get; set; }
         public string UserId { get; set; }
+        public string FileConnection { get; set; }
         public string Title { get; set; }
         public string Sport { get; set; }
         public string Details { get; set; }

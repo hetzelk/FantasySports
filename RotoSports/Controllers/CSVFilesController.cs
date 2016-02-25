@@ -38,7 +38,7 @@ namespace RotoSports.Controllers
         }
 
         // GET: CSVFiles/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id)//<a href="@(Url.Action("Details", "CSVFiles", new { sortby = title }))">@title</a> this is for the sorting link
         {
             CSVFiles thisCSVfile = db.CSVFiles.Find(id);
 
@@ -79,6 +79,7 @@ namespace RotoSports.Controllers
             {
                 return RedirectToAction("InvalidRequest", "Home");
             }
+            
             return View(thisCSVfile);
         }
         

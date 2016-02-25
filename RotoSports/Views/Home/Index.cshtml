@@ -5,7 +5,10 @@
 <div class="jumbotron">
     <h1 class="titletext KrinkesFont">RotoSports6</h1>
     <p class="lead">RotoSports. We'll dig deep for the facts so you don't have to. For free.</p>
+    @if (User.Identity.IsAuthenticated)
+    {
     <a href="@Url.Action("Index", "Sports")" class="btn btn-primary btn-lg">Choose the sport you'd like to create a lineup in.</a>
+    }
 </div>
 
 <div>

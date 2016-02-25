@@ -1,0 +1,75 @@
+﻿@model RotoSports.Models.Lineup
+
+@{
+    ViewBag.Title = "NBA Lineup";
+}
+
+<h2>NBA Editor</h2>
+
+@using (Html.BeginForm("NBAEditor", "Lineups", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Lineup</h4>
+        <hr />
+        @Html.HiddenFor(model => model.ID)
+        <table>
+            <tr>
+                <th><p>PG</p></th>
+                <td></td>
+                <td><input type="text" id="spotPG" name="spotPG" style="width: 325px" value="@ViewBag.Position1"/></td>
+            </tr>
+            <tr>
+                <th><p>SG</p></th>
+                <td></td>
+                <td><input type="text" id="spotSG" name="spotSG" style="width: 325px" value="@ViewBag.Position2"/></td>
+            </tr>
+            <tr>
+                <th><p>SF</p></th>
+                <td></td>
+                <td><input type="text" id="spotSF" name="spotSF" style="width: 325px" value="@ViewBag.Position3"/></td>
+            </tr>
+            <tr>
+                <th><p>PF</p></th>
+                <td></td>
+                <td><input type="text" id="spotPF" name="spotPF" style="width: 325px" value="@ViewBag.Position4"/></td>
+            </tr>
+            <tr>
+                <th><p>C</p></th>
+                <td></td>
+                <td><input type="text" id="spotC" name="spotC" style="width: 325px" value="@ViewBag.Position5"/></td>
+            </tr>
+            <tr>
+                <th><p>G</p></th>
+                <td></td>
+                <td><input type="text" id="spotG" name="spotG" style="width: 325px" value="@ViewBag.Position6"/></td>
+            </tr>
+            <tr>
+                <th><p>F</p></th>
+                <td></td>
+                <td><input type="text" id="spotF" name="spotF" style="width: 325px" value="@ViewBag.Position7"/></td>
+            </tr>
+            <tr>
+                <th><p>UTIL</p></th>
+                <td></td>
+                <td><input type="text" id="spotUTIL" name="spotUTIL" style="width: 325px" value="@ViewBag.Position8"/></td>
+            </tr>
+        </table>
+        <h4>Starred Players</h4>
+        @foreach(string player in ViewBag.StarPlayers)
+        {
+            <p>@player</p>
+        }
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
