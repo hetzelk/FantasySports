@@ -43,7 +43,34 @@
 
 <h2>@Html.DisplayFor(model => model.Title) File</h2>
 
-@foreach(string line in ViewBag.AllLines)
-{
-    <p>@line</p>
-}
+<table class="table">
+
+    <tr>
+        @foreach (var title in ViewBag.Titles)
+        {
+            <th>
+                @title
+            </th>
+        }
+        <th></th>
+    </tr>
+    @for (int i = 0; i < @ViewBag.Total; i++)
+    {
+        string[] currentplayer = @ViewBag.AllPlayers[i];
+        <tr>
+            @foreach(string column in currentplayer)
+            {
+            <td>
+                @column
+            </td>
+            }
+
+            <td>
+                @Html.ActionLink("Add", "Details", new { id = ViewBag.AllLines[i] }) |
+                @Html.ActionLink("Star", "Delete", new { id = ViewBag.AllLines[i] }) |
+                @Html.ActionLink("Star", "Delete", new { id = ViewBag.AllLines[i] })
+            </td>
+        </tr>
+    }
+
+</table>

@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using RotoSports.Models;
 using Microsoft.AspNet.Identity;
+using System.Web.UI.WebControls;
 
 namespace RotoSports.Controllers
 {
@@ -41,9 +42,35 @@ namespace RotoSports.Controllers
         {
             CSVFiles thisCSVfile = db.CSVFiles.Find(id);
 
-            string[] allLines = thisCSVfile.File.Split(new string[] { "*/*" }, StringSplitOptions.None);
-
+            List<string> allLines = thisCSVfile.File.Split(new string[] { "*/*" }, StringSplitOptions.None).ToList();
+            string[] titles = allLines[0].Split(',');
+            List<string> titlesList = new List<string>();
+            foreach(string title in titles)
+            {
+                string newtitle = title.Replace("\"", "");
+                titlesList.Add(newtitle);
+            }
+            allLines.Remove(allLines[0]);
+            List<string[]> allPlayersArrays = new List<string[]>();
+            foreach(string player in allLines)
+            {
+                string[] details = player.Split(',');
+                List<string> formatted = new List<string>();
+                foreach(string item in details)
+                {
+                    string newitem = item.Replace("\"", "");
+                    formatted.Add(newitem);
+                }
+                string[] endformat = formatted.ToArray();
+                allPlayersArrays.Add(endformat);
+            }
+            int countlines = allLines.Count;
+            int titletotal = titlesList.Count;
+            ViewBag.Titles = titlesList;
+            ViewBag.Total = countlines;
+            ViewBag.TitleTotal = titletotal;
             ViewBag.AllLines = allLines;
+            ViewBag.AllPlayers = allPlayersArrays;
             if (id == null)
             {
                 return RedirectToAction("InvalidRequest", "Home");
@@ -54,7 +81,7 @@ namespace RotoSports.Controllers
             }
             return View(thisCSVfile);
         }
-
+        
         // GET: CSVFiles/Create
         public ActionResult Create(string sport)
         {

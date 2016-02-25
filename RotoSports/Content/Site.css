@@ -22,3 +22,17 @@ select,
 textarea {
     max-width: 280px;
 }
+
+
+@font-face {
+    font-family: Krinkes;
+    src: url(Krinkes.ttf);
+}
+
+.KrinkesFont{
+    font-family: Krinkes;
+}
+
+.titletext{
+   font-size:4em;
+}

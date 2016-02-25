@@ -1,16 +1,19 @@
-﻿@model IEnumerable<RotoSports.Models.CSVFiles>
+﻿@model IEnumerable<RotoSports.Models.Lineup>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>All My Files</h2>
+<h2>Index</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserId)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Title)
         </th>
@@ -20,11 +23,20 @@
         <th>
             @Html.DisplayNameFor(model => model.Details)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SingleLineup)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PlayerList)
+        </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserId)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Title)
         </td>
@@ -33,6 +45,12 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Details)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SingleLineup)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PlayerList)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |

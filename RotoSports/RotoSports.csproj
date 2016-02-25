@@ -170,6 +170,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CSVFilesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LineupsController.cs" />
     <Compile Include="Controllers\SportsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NBAController.cs" />
@@ -183,6 +184,10 @@
     <Compile Include="Migrations\201602241741040_third-migration.cs" />
     <Compile Include="Migrations\201602241741040_third-migration.Designer.cs">
       <DependentUpon>201602241741040_third-migration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602242001155_fourth-migration.cs" />
+    <Compile Include="Migrations\201602242001155_fourth-migration.Designer.cs">
+      <DependentUpon>201602242001155_fourth-migration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -204,6 +209,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\Krinkes.ttf" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -263,6 +269,11 @@
     <Content Include="Views\Sports\Index.cshtml" />
     <Content Include="Views\Shared\_CSVUpload.cshtml" />
     <Content Include="Views\Home\InvalidRequest.cshtml" />
+    <Content Include="Views\Lineups\Create.cshtml" />
+    <Content Include="Views\Lineups\Delete.cshtml" />
+    <Content Include="Views\Lineups\Details.cshtml" />
+    <Content Include="Views\Lineups\Edit.cshtml" />
+    <Content Include="Views\Lineups\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -281,6 +292,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602241741040_third-migration.resx">
       <DependentUpon>201602241741040_third-migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602242001155_fourth-migration.resx">
+      <DependentUpon>201602242001155_fourth-migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

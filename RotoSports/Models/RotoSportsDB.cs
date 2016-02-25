@@ -16,5 +16,7 @@ namespace RotoSports.Models
         public System.Data.Entity.DbSet<RotoSports.Models.CSVFiles> CSVFiles { get; set; }
 
         public System.Data.Entity.DbSet<RotoSports.Models.NBA> NBA { get; set; }
+
+        public System.Data.Entity.DbSet<RotoSports.Models.Lineup> Lineups { get; set; }
     }
 }
