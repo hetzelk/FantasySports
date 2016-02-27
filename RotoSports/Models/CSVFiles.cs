@@ -13,5 +13,6 @@ namespace RotoSports.Models
         public string Sport { get; set; }
         public string Details { get; set; }
         public string File { get; set; }
+        public string BaseTitleList { get; set; }
     }
 }

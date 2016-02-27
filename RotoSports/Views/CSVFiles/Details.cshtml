@@ -4,7 +4,7 @@
     ViewBag.Title = "Details";
 }
 
-<h2>@Html.DisplayFor(model => model.Title)</h2>
+<h2>@Html.DisplayFor(model => model.Title) File</h2>
 
 <div>
     <hr />
@@ -28,6 +28,14 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.BaseTitleList)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BaseTitleList)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Details)
         </dt>
 
@@ -40,8 +48,6 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
-
-<h2>@Html.DisplayFor(model => model.Title) File</h2>
 
 <table class="table">
 
@@ -56,7 +62,12 @@
     </tr>
     @for (int i = 0; i < @ViewBag.Total - 2; i++)
     {
-        string[] currentplayer = @ViewBag.AllPlayers[i];
+        string[] currentplayer = ViewBag.AllPlayers[i];
+        string wholePlayer = "";
+        foreach (string item in currentplayer)
+        {
+            wholePlayer += item + "~";
+        }
         <tr>
             @foreach(string detail in currentplayer)
             {
@@ -66,9 +77,29 @@
             }
 
             <td>
-                @Html.ActionLink("More Stats", "Details", "Lineups", new { id = currentplayer[1] }) |
-                @Html.ActionLink("Add", "Delete", "Lineups", new { id = currentplayer[1] }) |
-                @Html.ActionLink("Star", "Delete", "Lineups", new { id = currentplayer[1] })
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Add <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        @foreach (var item in ViewBag.UserLineups)
+                        {
+                            <li><a href="~/Lineups/Add/@item.Key?@wholePlayer">@item.Value</a></li>
+                        }
+                    </ul>
+                </div>
+                <a href="~/Lineups/MoreStats/@wholePlayer" class="btn btn-info">More Stats</a>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Star <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        @foreach (var item in ViewBag.UserLineups)
+                        {
+                            <li><a href="~/Lineups/Star/@item.Key+@wholePlayer">@item.Value</a></li>
+                        }
+                    </ul>
+                </div>
             </td>
         </tr>
     }

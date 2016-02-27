@@ -32,7 +32,7 @@ namespace RotoSports.Controllers
             Lineup lineup = db.Lineups.Find(ID);
             if (lineup.Sport == "NBA")
             {
-                return RedirectToAction("NBAEditor", new { id = ID });
+                return RedirectToAction("Editor", new { id = ID });
             }
             else
             {
@@ -45,12 +45,40 @@ namespace RotoSports.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index");
             }
             Lineup lineup = db.Lineups.Find(id);
             if (lineup == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index");
+            }
+            return View(lineup);
+        }
+
+        // GET: Lineups/Details/5
+        public ActionResult Star(string input)
+        {
+            string[] inputstring = input.Split('+');
+            int? id = Convert.ToInt32(inputstring[0]);
+            string player = inputstring[1];
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
+            Lineup lineup = db.Lineups.Find(id);
+            if (lineup == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            string currentstars = lineup.PlayerList;
+            currentstars += player + "*/*";
+            lineup.PlayerList = currentstars;
+            if (ModelState.IsValid)
+            {
+                db.Entry(lineup).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
             return View(lineup);
         }
@@ -65,7 +93,6 @@ namespace RotoSports.Controllers
             {
                 allUserFiles.Add(file.ID, file.Title);
             }
-
             ViewBag.AllFileDict = allUserFiles;
             return View();
         }
@@ -80,7 +107,24 @@ namespace RotoSports.Controllers
             int filekey = Convert.ToInt32(lineup.FileConnection);
             CSVFiles file = db.CSVFiles.Find(filekey);
             lineup.Sport = file.Sport;
-            lineup.SingleLineup = "*/PG:**/SG:**/SF:**/PF:**/C:**/G:**/F:**/UTIL:*";
+            string sport = file.Sport;
+            switch (sport)
+            {
+                case "NBA": lineup.SingleLineup = "PG:1 Empty Player Data*/*SG:2 Empty Player Data*/*SF:3 Empty Player Data*/*PF:4 Empty Player Data*/*C:5 Empty Player Data*/*F:6 Empty Player Data*/*F:7 Empty Player Data*/*UTIL:8 Empty Player Data"; break;
+                case "MMA": lineup.SingleLineup = "*/**/**/**/**/*"; break;
+                case "CBB": lineup.SingleLineup = "*/**/**/**/**/**/**/**/*"; break;
+                case "NHL": lineup.SingleLineup = "*/**/**/**/**/**/**/**/**/*"; break;
+                case "NAS": lineup.SingleLineup = "*/**/**/**/**/**/*"; break;
+                case "LOL": lineup.SingleLineup = "*/**/**/**/**/**/*"; break;
+                case "SOC": lineup.SingleLineup = "*/**/**/**/**/**/**/**/**/**/**/*"; break;
+                case "NFL": lineup.SingleLineup = "*/**/**/**/**/**/**/**/**/*"; break;
+                case "MLB": lineup.SingleLineup = "*/**/**/**/**/**/*"; break;
+                case "PGA": lineup.SingleLineup = "*/**/**/**/**/**/*"; break;
+                case "CFB": lineup.SingleLineup = "*/**/**/**/**/**/**/*"; break;
+                default   : lineup.SingleLineup = "*/**/**/**/**/**/**/**/*"; break;
+            }
+            
+            lineup.BaseTitleList = file.BaseTitleList;
             if (ModelState.IsValid)
             {
                 db.Lineups.Add(lineup);
@@ -122,39 +166,63 @@ namespace RotoSports.Controllers
             return View(lineup);
         }
         // GET: Lineups/Edit/5
-        public ActionResult NBAEditor(int? id)
+        public ActionResult Editor(int? id)
         {
+            Lineup lineup = db.Lineups.Find(id);
+            string stringtitlelist = lineup.BaseTitleList;
+            List<string> allLines = lineup.SingleLineup.Split(new string[] { "*/*" }, StringSplitOptions.None).ToList();
+            string[] titles = stringtitlelist.Split(',');
+
+            List<string> titleList = new List<string>();
+            foreach (string title in titles)
+            {
+                string newtitle = title.Replace("\"", "");
+                titleList.Add(newtitle);
+            }
+            List<string[]> allPlayersArrays = new List<string[]>();
+            foreach (string player in allLines)
+            {
+                string[] details = player.Split(',');
+                List<string> formatted = new List<string>();
+                foreach (string item in details)
+                {
+                    string newitem = item.Replace("\"", "");
+                    formatted.Add(newitem);
+                }
+                string[] endformat = formatted.ToArray();
+                allPlayersArrays.Add(endformat);
+            }
+            int countlines = allLines.Count;
+            int titletotal = titleList.Count;
+            ViewBag.Titles = titleList;
+            ViewBag.Total = countlines;
+            ViewBag.TitleTotal = titletotal;
+            ViewBag.AllLines = allLines;
+            ViewBag.AllPlayers = allPlayersArrays;
+
             if (id == null)
             {
                 return RedirectToAction("Index");
             }
-            Lineup lineup = db.Lineups.Find(id);
-            List<string> fullLineup = lineup.SingleLineup.Split(new string[] { "*/" }, StringSplitOptions.None).ToList();
-            fullLineup.Remove(fullLineup[0]);
-            List<string> names = new List<string>();
-            foreach (string item in fullLineup)
+            List<string[]> starredPlayers = new List<string[]>();
+            if (lineup.PlayerList != null)
             {
-                string[] newname = item.Split(new string[] { ":*" }, StringSplitOptions.None);
-                names.Add(newname[1]);
+                ViewBag.NoPlayers = "false";
+                List<string> allstars = lineup.PlayerList.Split(new string[] { "*/*" }, StringSplitOptions.None).ToList();
+                foreach (string player in allstars)
+                {
+                    starredPlayers.Add(player.Split('~'));
+                }
             }
-            ViewBag.Position1 = names[0];
-            ViewBag.Position2 = names[1];
-            ViewBag.Position3 = names[2];
-            ViewBag.Position4 = names[3];
-            ViewBag.Position5 = names[4];
-            ViewBag.Position6 = names[5];
-            ViewBag.Position7 = names[6];
-            ViewBag.Position8 = names[7];
-            
-            List<string> starredPlayers = new List<string>();
-            starredPlayers.Add("Keith Hetzel");
-            starredPlayers.Add("Ray CisNerdos");
-            starredPlayers.Add("Drew Otteson");
-            starredPlayers.Add("Steph Curry");
+            else
+            {
+                ViewBag.NoPlayers = "true";
+            }
             if (lineup == null)
             {
                 return RedirectToAction("Index");
             }
+            ViewBag.NoPlayers = "false";
             ViewBag.StarPlayers = starredPlayers;
             return View(lineup);
         }
@@ -164,9 +232,9 @@ namespace RotoSports.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult NBAEditor(string spotPG, string spotSG, string spotSF, string spotPF, string spotC, string spotG, string spotF, string spotUTIL, [Bind(Include = "ID")] Lineup lineup)
+        public ActionResult Editor(string spotPG, string spotSG, string spotSF, string spotPF, string spotC, string spotG, string spotF, string spotUTIL, [Bind(Include = "ID")] Lineup lineup)
         {
-            string singleLineup = "*/PG:*" + spotPG + "*/SG:*" + spotSG + "*/SF:*" + spotSF + "*/PF:*" + spotPF + "*/C:*" + spotC + "*/G:*" + spotG + "*/F:*" + spotF + "*/UTIL:*" + spotUTIL;
+            string singleLineup = "*/*" + spotPG + "*/*" + spotSG + "*/*" + spotSF + "*/*" + spotPF + "*/*" + spotC + "*/*" + spotG + "*/*" + spotF + "*/*" + spotUTIL;
             Lineup newlineup = db.Lineups.Find(lineup.ID);
             newlineup.SingleLineup = singleLineup;
             if (ModelState.IsValid)

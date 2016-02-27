@@ -21,28 +21,24 @@ namespace RotoSports.Controllers
         public ActionResult Index()
         {
             var UserID = User.Identity.GetUserId();
-            ViewBag.UserId = UserID;
-            List<CSVFiles> MyFiles = new List<CSVFiles>();
-            foreach (CSVFiles eachFIle in db.CSVFiles)
-            {
-                if (eachFIle.UserId != UserID)
-                {
-                    //do nothing
-                }
-                else
-                {
-                    MyFiles.Add(eachFIle);
-                }
-            }
-            return View(MyFiles);
+            return View(db.CSVFiles.Where(x => x.UserId == UserID));
         }
 
         // GET: CSVFiles/Details/5
         public ActionResult Details(int? id)//<a href="@(Url.Action("Details", "CSVFiles", new { sortby = title }))">@title</a> this is for the sorting link
         {
             CSVFiles thisCSVfile = db.CSVFiles.Find(id);
+            var UserID = User.Identity.GetUserId();
+            List<Lineup> UserLineups = db.Lineups.Where(x => x.UserId == UserID).ToList();
+            Dictionary<string, string> UserLineupDictionary = new Dictionary<string, string>();
+            foreach (Lineup userLineup in UserLineups)
+            {
+                UserLineupDictionary.Add(userLineup.ID.ToString(), userLineup.Title);
+            }
+            ViewBag.UserLineups = UserLineupDictionary;
 
             List<string> allLines = thisCSVfile.File.Split(new string[] { "*/*" }, StringSplitOptions.None).ToList();
+            string basetitles = allLines[0];
             string[] titles = allLines[0].Split(',');
             List<string> titlesList = new List<string>();
             foreach(string title in titles)
@@ -71,6 +67,7 @@ namespace RotoSports.Controllers
             ViewBag.TitleTotal = titletotal;
             ViewBag.AllLines = allLines;
             ViewBag.AllPlayers = allPlayersArrays;
+            ViewBag.BaseTitles = basetitles;
             if (id == null)
             {
                 return RedirectToAction("InvalidRequest", "Home");
@@ -97,24 +94,27 @@ namespace RotoSports.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,UserId,Title,Sport,Details,File")] CSVFiles cSVFiles)
+        public ActionResult Create([Bind(Include = "ID,UserId,Title,Sport,Details,File")] CSVFiles thisCSVFile)
         {
-            string[] lines = cSVFiles.File.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            string[] lines = thisCSVFile.File.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             string endFile = "";
             foreach (string line in lines)
             {
                 string newLine = line + "*/*";
                 endFile += newLine;
             }
-            cSVFiles.File = endFile;
+            thisCSVFile.File = endFile;
+            List<string> allLines = thisCSVFile.File.Split(new string[] { "*/*" }, StringSplitOptions.None).ToList();
+            string basetitles = allLines[0];
+            thisCSVFile.BaseTitleList = basetitles;
             if (ModelState.IsValid)
             {
-                db.CSVFiles.Add(cSVFiles);
+                db.CSVFiles.Add(thisCSVFile);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(cSVFiles);
+            return View(thisCSVFile);
         }
 
         // GET: CSVFiles/Edit/5

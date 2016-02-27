@@ -15,5 +15,6 @@ namespace RotoSports.Models
         public string Details { get; set; }
         public string SingleLineup { get; set; }
         public string PlayerList { get; set; }
+        public string BaseTitleList { get; set; }
     }
 }
