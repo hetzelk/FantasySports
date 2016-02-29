@@ -77,6 +77,7 @@ namespace RotoSports.Controllers
                 currentstars += player + "*/*";
                 lineup.PlayerList = currentstars;
             }
+            lineup.PlayerList = currentstars;
             if (ModelState.IsValid)
             {
                 db.Entry(lineup).State = EntityState.Modified;
@@ -98,6 +99,14 @@ namespace RotoSports.Controllers
             {
                 return RedirectToAction("Index");
             }
+            string[] displayplayer = inputplayer.Split('~');
+            string stringplayer = "";
+            foreach(string detail in displayplayer)
+            {
+                stringplayer += detail + " ";
+            }
+            ViewBag.DisplayPlayer = stringplayer;
+            ViewBag.NewPlayer = inputplayer;
             Lineup lineup = db.Lineups.Find(id);
             string stringtitlelist = lineup.BaseTitleList;
             List<string> allLines = lineup.SingleLineup.Split(new string[] { "*/*" }, StringSplitOptions.None).ToList();
@@ -128,29 +137,41 @@ namespace RotoSports.Controllers
             ViewBag.Titles = titleList;
             ViewBag.Total = countlines;
             ViewBag.AllPlayers = allPlayersArrays;
-            return View();
+            return View(lineup);
         }
         // GET: Lineups/Star/5$playerdetails
-        public ActionResult AddPlayer(int? lineupid, string player)
+        public ActionResult AddPlayer(int? id, string playerinput, int position)
         {
-            if (lineupid == null)
+            if (id == null)
             {
                 return RedirectToAction("Index");
             }
-            Lineup lineup = db.Lineups.Find(lineupid);
-            if (lineup == null || player == "")
+            Lineup lineup = db.Lineups.Find(id);
+            if (lineup == null || playerinput == "")
             {
                 return RedirectToAction("Index");
             }
 
-            string currentlineup = lineup.SingleLineup;
-            currentlineup += player + "*/*";
-            lineup.SingleLineup = currentlineup;
+            List<string> currentlineup = lineup.SingleLineup.Split(new string[] { "*/*" }, StringSplitOptions.None).ToList();
+            string singlelineup = "";
+            for (int i = 0; i < currentlineup.Count(); i++)
+            {
+                if (i == position)
+                {
+                    singlelineup += playerinput + "*/*";
+                }
+                else
+                {
+                    singlelineup += currentlineup[i] + "*/*";
+                }
+                
+            }
+            lineup.SingleLineup = singlelineup;
             if (ModelState.IsValid)
             {
                 db.Entry(lineup).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Editor", "Lineups", new { id = lineupid });
+                return RedirectToAction("Editor", "Lineups", new { id = id });
             }
             return View(lineup);
         }

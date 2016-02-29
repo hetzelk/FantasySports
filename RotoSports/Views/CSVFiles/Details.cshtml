@@ -76,7 +76,7 @@
                         @foreach (var item in ViewBag.UserLineups)
                         {
                             string lineupname = item.Value;
-                            <li>@Html.ActionLink(lineupname, "AddPlayer", "Lineups", new { lineupid = item.Key, player = wholePlayer }, null)</li>
+                            <li>@Html.ActionLink(lineupname, "Add", "Lineups", new { id = item.Key, inputplayer = wholePlayer }, null)</li>
                         }
                         <li role="separator" class="divider"></li>
                         <li>@Html.ActionLink("Create New Lineup", "Create", "Lineups", new { id = Model.ID }, null)</li>
