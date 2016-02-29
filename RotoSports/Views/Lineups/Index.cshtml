@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<RotoSports.Models.Lineup>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "All Lineups";
 }
 
-<h2>Index</h2>
+<h2>My Lineups</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -36,7 +36,6 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "Editor", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.ID })
         </td>
     </tr>

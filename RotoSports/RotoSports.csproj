@@ -285,6 +285,7 @@
     <Content Include="Views\Lineups\ChangeSport.cshtml" />
     <Content Include="Views\Lineups\Editor.cshtml" />
     <Content Include="Views\Lineups\Star.cshtml" />
+    <Content Include="Views\Lineups\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

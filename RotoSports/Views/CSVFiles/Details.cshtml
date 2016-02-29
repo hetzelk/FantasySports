@@ -28,14 +28,6 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.BaseTitleList)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.BaseTitleList)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.Details)
         </dt>
 
@@ -45,7 +37,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
 
@@ -82,10 +73,19 @@
                         Add <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        @foreach (var item in ViewBag.UserLineups)
+                        @if (ViewBag.UserLineups.Count == 0)
                         {
-                            <li><a href="~/Lineups/Add/@item.Key$@wholePlayer">@item.Value</a></li>
+                            <li>@Html.ActionLink("Create New", "Create", "Lineups", new { id = Model.ID }, null)</li>
                         }
+                        else
+                        {
+                            foreach (var item in ViewBag.UserLineups)
+                            {
+                                string lineupname = item.Value;
+                                <li>@Html.ActionLink(lineupname, "Add", "Lineups", new { lineupid = item.Key, player = wholePlayer, fileId = Model.ID }, null)</li>
+                            }
+                        }
+                        
                     </ul>
                 </div>
                 <a href="~/Lineups/MoreStats/@wholePlayer" class="btn btn-info">More Stats</a>
@@ -94,11 +94,21 @@
                         Star <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        @foreach (var item in ViewBag.UserLineups)
+
+                        @if (ViewBag.UserLineups.Count == 0)
                         {
-                            string lineupname = item.Value;
-                            <li>@Html.ActionLink(lineupname, "Star", "Lineups", new { lineupid = item.Key, player = wholePlayer, fileId = Model.ID }, null)</li>                            
+                            <li>@Html.ActionLink("Create New", "Create", "Lineups", new { id = Model.ID }, null)</li>
                         }
+                        else
+                        {
+                            foreach (var item in ViewBag.UserLineups)
+                            {
+                                string lineupname = item.Value;
+                                <li>@Html.ActionLink(lineupname, "Star", "Lineups", new { lineupid = item.Key, player = wholePlayer, fileId = Model.ID }, null)</li>
+                            }
+                        }
+
+                        
                     </ul>
                 </div>
             </td>

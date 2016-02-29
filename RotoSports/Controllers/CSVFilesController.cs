@@ -33,7 +33,7 @@ namespace RotoSports.Controllers
             }
             CSVFiles thisCSVfile = db.CSVFiles.Find(id);
             var UserID = User.Identity.GetUserId();
-            List<Lineup> UserLineups = db.Lineups.Where(x => x.UserId == UserID).ToList();
+            List<Lineup> UserLineups = db.Lineups.Where(x => x.UserId == UserID && x.FileConnection == thisCSVfile.ID.ToString()).ToList();
             Dictionary<string, string> UserLineupDictionary = new Dictionary<string, string>();
             foreach (Lineup userLineup in UserLineups)
             {

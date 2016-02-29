@@ -81,6 +81,32 @@ namespace RotoSports.Controllers
             return View(lineup);
         }
 
+        // GET: Lineups/Star/5$playerdetails
+        public ActionResult Add(int? lineupid, string player, int? fileId)
+        {
+            if (lineupid == null)
+            {
+                return RedirectToAction("Index");
+            }
+            Lineup lineup = db.Lineups.Find(lineupid);
+            if (lineup == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            string currentstars = lineup.PlayerList;
+            currentstars += player + "*/*";
+            lineup.PlayerList = currentstars;
+            if (ModelState.IsValid)
+            {
+                db.Entry(lineup).State = EntityState.Modified;
+                db.SaveChanges();
+                int? id = fileId;
+                return RedirectToAction("Details", "CSVFiles", id);
+            }
+            return View(lineup);
+        }
+
         // GET: Lineups/Create
         public ActionResult Create()
         {
@@ -109,19 +135,19 @@ namespace RotoSports.Controllers
             switch (sport)
             {
                 case "NBA": lineup.SingleLineup = "PG:1 Empty Player Data*/*SG:2 Empty Player Data*/*SF:3 Empty Player Data*/*PF:4 Empty Player Data*/*C:5 Empty Player Data*/*F:6 Empty Player Data*/*F:7 Empty Player Data*/*UTIL:8 Empty Player Data"; break;
-                case "MMA": lineup.SingleLineup = "*/**/**/**/**/*"; break;
-                case "CBB": lineup.SingleLineup = "*/**/**/**/**/**/**/**/*"; break;
-                case "NHL": lineup.SingleLineup = "*/**/**/**/**/**/**/**/**/*"; break;
+                case "MMA": lineup.SingleLineup = "Empty Player Data*/*Empty Player Data*/*Empty Player Data*/*Empty Player Data*/*Empty Player Data"; break;
+                case "CBB": lineup.SingleLineup = "G:Empty Player Data*/*G:Empty Player Data*/*G:Empty Player Data*/*F:Empty Player Data*/*F:Empty Player Data*/*F:Empty Player Data*/*UTIL:Empty Player Data*/*UTIL:Empty Player Data"; break;
+                case "NHL": lineup.SingleLineup = "C:Empty Player Data*/*C:Empty Player Data*/*W:Empty Player Data*/*W:Empty Player Data*/*W:Empty Player Data*/*D:Empty Player Data*/*D:Empty Player Data*/*G:Empty Player Data*/*UTIL:Empty Player Data"; break;
                 case "NAS": lineup.SingleLineup = "*/**/**/**/**/**/*"; break;
                 case "LOL": lineup.SingleLineup = "*/**/**/**/**/**/*"; break;
-                case "SOC": lineup.SingleLineup = "*/**/**/**/**/**/**/**/**/**/**/*"; break;
+                case "SOC": lineup.SingleLineup = "GK:Empty Player Data*/*D:Empty Player Data*/*D:Empty Player Data*/*D:Empty Player Data*/*M:Empty Player Data*/*M:Empty Player Data*/*M:Empty Player Data*/*F:Empty Player Data*/*F:Empty Player Data*/*UTIL:Empty Player Data*/*UTIL:Empty Player Data"; break;
                 case "NFL": lineup.SingleLineup = "*/**/**/**/**/**/**/**/**/*"; break;
                 case "MLB": lineup.SingleLineup = "*/**/**/**/**/**/*"; break;
-                case "PGA": lineup.SingleLineup = "*/**/**/**/**/**/*"; break;
+                case "PGA": lineup.SingleLineup = "Empty Player Data*/*Empty Player Data*/*Empty Player Data*/*Empty Player Data*/*Empty Player Data*/*Empty Player Data"; break;
                 case "CFB": lineup.SingleLineup = "*/**/**/**/**/**/**/*"; break;
                 default   : lineup.SingleLineup = "*/**/**/**/**/**/**/**/*"; break;
             }
-            
+            lineup.PlayerList = "*/*";
             lineup.BaseTitleList = file.BaseTitleList;
             if (ModelState.IsValid)
             {
@@ -163,6 +189,7 @@ namespace RotoSports.Controllers
             }
             return View(lineup);
         }
+
         // GET: Lineups/Edit/5
         public ActionResult Editor(int? id)
         {
@@ -224,11 +251,21 @@ namespace RotoSports.Controllers
             {
                 return RedirectToAction("Index");
             }
-            List<string> countthestars = lineup.PlayerList.Split(new string[] { "*/*" }, StringSplitOptions.None).ToList();
-            countthestars.Remove(countthestars[countthestars.Count - 1]);
-            int countstars = countthestars.Count;
+            List<string> countthestars = new List<string>();
+            int countstars = 0;
+            int starcount = starredPlayers.Count();
+            if (starcount != 1)
+            {
+                countthestars = lineup.PlayerList.Split(new string[] { "*/*" }, StringSplitOptions.None).ToList();
+                countthestars.Remove(countthestars[countthestars.Count - 1]);
+                countstars = countthestars.Count;
+            }
+            else
+            {
+                countstars = 0;
+                ViewBag.NoPlayers = "true";
+            }
             ViewBag.TotalStars = countstars;
-            ViewBag.NoPlayers = "false";
             ViewBag.StarPlayers = starredPlayers;
             return View(lineup);
         }
@@ -238,11 +275,9 @@ namespace RotoSports.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Editor(string spotPG, string spotSG, string spotSF, string spotPF, string spotC, string spotG, string spotF, string spotUTIL, [Bind(Include = "ID")] Lineup lineup)
+        public ActionResult Editor([Bind(Include = "ID")] Lineup lineup)
         {
-            string singleLineup = "*/*" + spotPG + "*/*" + spotSG + "*/*" + spotSF + "*/*" + spotPF + "*/*" + spotC + "*/*" + spotG + "*/*" + spotF + "*/*" + spotUTIL;
             Lineup newlineup = db.Lineups.Find(lineup.ID);
-            newlineup.SingleLineup = singleLineup;
             if (ModelState.IsValid)
             {
                 db.Entry(newlineup).State = EntityState.Modified;
