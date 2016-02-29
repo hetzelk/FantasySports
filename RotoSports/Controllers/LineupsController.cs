@@ -55,17 +55,14 @@ namespace RotoSports.Controllers
             return View(lineup);
         }
 
-        // GET: Lineups/Details/5
-        public ActionResult Star(string input)
+        // GET: Lineups/Star/5$playerdetails
+        public ActionResult Star(int? lineupid, string player, int? fileId)
         {
-            string[] inputstring = input.Split('+');
-            int? id = Convert.ToInt32(inputstring[0]);
-            string player = inputstring[1];
-            if (id == null)
+            if (lineupid == null)
             {
                 return RedirectToAction("Index");
             }
-            Lineup lineup = db.Lineups.Find(id);
+            Lineup lineup = db.Lineups.Find(lineupid);
             if (lineup == null)
             {
                 return RedirectToAction("Index");
@@ -78,7 +75,8 @@ namespace RotoSports.Controllers
             {
                 db.Entry(lineup).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                int? id = fileId;
+                return RedirectToAction("Details", "CSVFiles", id);
             }
             return View(lineup);
         }
@@ -168,6 +166,10 @@ namespace RotoSports.Controllers
         // GET: Lineups/Edit/5
         public ActionResult Editor(int? id)
         {
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
             Lineup lineup = db.Lineups.Find(id);
             string stringtitlelist = lineup.BaseTitleList;
             List<string> allLines = lineup.SingleLineup.Split(new string[] { "*/*" }, StringSplitOptions.None).ToList();
@@ -200,18 +202,18 @@ namespace RotoSports.Controllers
             ViewBag.AllLines = allLines;
             ViewBag.AllPlayers = allPlayersArrays;
 
-            if (id == null)
-            {
-                return RedirectToAction("Index");
-            }
             List<string[]> starredPlayers = new List<string[]>();
             if (lineup.PlayerList != null)
             {
                 ViewBag.NoPlayers = "false";
                 List<string> allstars = lineup.PlayerList.Split(new string[] { "*/*" }, StringSplitOptions.None).ToList();
+                allstars.Remove(allstars[allstars.Count - 1]);
                 foreach (string player in allstars)
                 {
-                    starredPlayers.Add(player.Split('~'));
+                    List<string> thisplayer = player.Split('~').ToList();
+                    thisplayer.Remove(thisplayer[thisplayer.Count - 1]);
+                    string[] thisarray = thisplayer.ToArray();
+                    starredPlayers.Add(thisarray);
                 }
             }
             else
@@ -222,6 +224,10 @@ namespace RotoSports.Controllers
             {
                 return RedirectToAction("Index");
             }
+            List<string> countthestars = lineup.PlayerList.Split(new string[] { "*/*" }, StringSplitOptions.None).ToList();
+            countthestars.Remove(countthestars[countthestars.Count - 1]);
+            int countstars = countthestars.Count;
+            ViewBag.TotalStars = countstars;
             ViewBag.NoPlayers = "false";
             ViewBag.StarPlayers = starredPlayers;
             return View(lineup);

@@ -27,6 +27,10 @@ namespace RotoSports.Controllers
         // GET: CSVFiles/Details/5
         public ActionResult Details(int? id)//<a href="@(Url.Action("Details", "CSVFiles", new { sortby = title }))">@title</a> this is for the sorting link
         {
+            if (id == null)
+            {
+                return RedirectToAction("Index", "CSVFiles");
+            }
             CSVFiles thisCSVfile = db.CSVFiles.Find(id);
             var UserID = User.Identity.GetUserId();
             List<Lineup> UserLineups = db.Lineups.Where(x => x.UserId == UserID).ToList();
@@ -68,10 +72,7 @@ namespace RotoSports.Controllers
             ViewBag.AllLines = allLines;
             ViewBag.AllPlayers = allPlayersArrays;
             ViewBag.BaseTitles = basetitles;
-            if (id == null)
-            {
-                return RedirectToAction("InvalidRequest", "Home");
-            }
+            
             if (thisCSVfile == null)
             {
                 return RedirectToAction("InvalidRequest", "Home");
