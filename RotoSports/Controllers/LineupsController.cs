@@ -67,42 +67,90 @@ namespace RotoSports.Controllers
             {
                 return RedirectToAction("Index");
             }
-
             string currentstars = lineup.PlayerList;
-            currentstars += player + "*/*";
-            lineup.PlayerList = currentstars;
+            if(currentstars == "noplayers")
+            {
+                currentstars = player + "*/*";
+            }
+            else
+            {
+                currentstars += player + "*/*";
+                lineup.PlayerList = currentstars;
+            }
             if (ModelState.IsValid)
             {
                 db.Entry(lineup).State = EntityState.Modified;
                 db.SaveChanges();
                 int? id = fileId;
-                return RedirectToAction("Details", "CSVFiles", id);
+                return RedirectToAction("Details", "CSVFiles", new { id = id });
             }
             return View(lineup);
         }
 
         // GET: Lineups/Star/5$playerdetails
-        public ActionResult Add(int? lineupid, string player, int? fileId)
+        public ActionResult Add(int? id, string inputplayer)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
+            Lineup lineup = db.Lineups.Find(id);
+            string stringtitlelist = lineup.BaseTitleList;
+            List<string> allLines = lineup.SingleLineup.Split(new string[] { "*/*" }, StringSplitOptions.None).ToList();
+            string[] titles = stringtitlelist.Split(',');
+
+            List<string> titleList = new List<string>();
+            foreach (string title in titles)
+            {
+                string newtitle = title.Replace("\"", "");
+                titleList.Add(newtitle);
+            }
+            List<string[]> allPlayersArrays = new List<string[]>();
+            foreach (string player in allLines)
+            {
+                string[] details = player.Split('~');
+                List<string> formatted = new List<string>();
+                foreach (string item in details)
+                {
+                    string newitem = item.Replace("\"", "");
+                    formatted.Add(newitem);
+                }
+                formatted.Remove(formatted[formatted.Count() - 1]);
+                string[] endformat = formatted.ToArray();
+                allPlayersArrays.Add(endformat);
+            }
+            int countlines = allLines.Count;
+            int titletotal = titleList.Count;
+            ViewBag.Titles = titleList;
+            ViewBag.Total = countlines;
+            ViewBag.AllPlayers = allPlayersArrays;
+            return View();
+        }
+        // GET: Lineups/Star/5$playerdetails
+        public ActionResult AddPlayer(int? lineupid, string player)
         {
             if (lineupid == null)
             {
                 return RedirectToAction("Index");
             }
             Lineup lineup = db.Lineups.Find(lineupid);
-            if (lineup == null)
+            if (lineup == null || player == "")
             {
                 return RedirectToAction("Index");
             }
 
-            string currentstars = lineup.PlayerList;
-            currentstars += player + "*/*";
-            lineup.PlayerList = currentstars;
+            string currentlineup = lineup.SingleLineup;
+            currentlineup += player + "*/*";
+            lineup.SingleLineup = currentlineup;
             if (ModelState.IsValid)
             {
                 db.Entry(lineup).State = EntityState.Modified;
                 db.SaveChanges();
-                int? id = fileId;
-                return RedirectToAction("Details", "CSVFiles", id);
+                return RedirectToAction("Editor", "Lineups", new { id = lineupid });
             }
             return View(lineup);
         }
@@ -122,8 +170,6 @@ namespace RotoSports.Controllers
         }
 
         // POST: Lineups/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,UserId,Title,FileConnection,Details")] Lineup lineup)
@@ -134,20 +180,20 @@ namespace RotoSports.Controllers
             string sport = file.Sport;
             switch (sport)
             {
-                case "NBA": lineup.SingleLineup = "PG:1 Empty Player Data*/*SG:2 Empty Player Data*/*SF:3 Empty Player Data*/*PF:4 Empty Player Data*/*C:5 Empty Player Data*/*F:6 Empty Player Data*/*F:7 Empty Player Data*/*UTIL:8 Empty Player Data"; break;
-                case "MMA": lineup.SingleLineup = "Empty Player Data*/*Empty Player Data*/*Empty Player Data*/*Empty Player Data*/*Empty Player Data"; break;
-                case "CBB": lineup.SingleLineup = "G:Empty Player Data*/*G:Empty Player Data*/*G:Empty Player Data*/*F:Empty Player Data*/*F:Empty Player Data*/*F:Empty Player Data*/*UTIL:Empty Player Data*/*UTIL:Empty Player Data"; break;
-                case "NHL": lineup.SingleLineup = "C:Empty Player Data*/*C:Empty Player Data*/*W:Empty Player Data*/*W:Empty Player Data*/*W:Empty Player Data*/*D:Empty Player Data*/*D:Empty Player Data*/*G:Empty Player Data*/*UTIL:Empty Player Data"; break;
-                case "NAS": lineup.SingleLineup = "*/**/**/**/**/**/*"; break;
-                case "LOL": lineup.SingleLineup = "*/**/**/**/**/**/*"; break;
-                case "SOC": lineup.SingleLineup = "GK:Empty Player Data*/*D:Empty Player Data*/*D:Empty Player Data*/*D:Empty Player Data*/*M:Empty Player Data*/*M:Empty Player Data*/*M:Empty Player Data*/*F:Empty Player Data*/*F:Empty Player Data*/*UTIL:Empty Player Data*/*UTIL:Empty Player Data"; break;
-                case "NFL": lineup.SingleLineup = "*/**/**/**/**/**/**/**/**/*"; break;
-                case "MLB": lineup.SingleLineup = "*/**/**/**/**/**/*"; break;
-                case "PGA": lineup.SingleLineup = "Empty Player Data*/*Empty Player Data*/*Empty Player Data*/*Empty Player Data*/*Empty Player Data*/*Empty Player Data"; break;
-                case "CFB": lineup.SingleLineup = "*/**/**/**/**/**/**/*"; break;
-                default   : lineup.SingleLineup = "*/**/**/**/**/**/**/**/*"; break;
+                case "NBA": lineup.SingleLineup = "PG:1 Empty Player Data~*/*SG:2 Empty Player Data~*/*SF:3 Empty Player Data~*/*PF:4 Empty Player Data~*/*C:5 Empty Player Data~*/*F:6 Empty Player Data~*/*F:7 Empty Player Data~*/*UTIL:8 Empty Player Data~"; break;
+                case "MMA": lineup.SingleLineup = "Empty Fighter Data~*/*Empty Fighter Data~*/*Empty Fighter Data~*/*Empty Fighter Data~*/*Empty Fighter Data~"; break;
+                case "CBB": lineup.SingleLineup = "G:Empty Player Data~*/*G:Empty Player Data~*/*G:Empty Player Data~*/*F:Empty Player Data~*/*F:Empty Player Data~*/*F:Empty Player Data~*/*UTIL:Empty Player Data~*/*UTIL:Empty Player Data~"; break;
+                case "NHL": lineup.SingleLineup = "C:Empty Player Data~*/*C:Empty Player Data~*/*W:Empty Player Data~*/*W:Empty Player Data~*/*W:Empty Player Data~*/*D:Empty Player Data~*/*D:Empty Player Data~*/*G:Empty Player Data~*/*UTIL:Empty Player Data~"; break;
+                case "NAS": lineup.SingleLineup = "Empty Driver Data~*/*Empty Driver Data~*/*Empty Driver Data~*/*Empty Driver Data~*/*Empty Driver Data~*/*Empty Driver Data~*/*"; break;
+                case "LOL": lineup.SingleLineup = "Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*"; break;
+                case "SOC": lineup.SingleLineup = "GK:Empty Player Data~*/*D:Empty Player Data~*/*D:Empty Player Data~*/*D:Empty Player Data~*/*M:Empty Player Data~*/*M:Empty Player Data~*/*M:Empty Player Data~*/*F:Empty Player Data~*/*F:Empty Player Data~*/*UTIL:Empty Player Data~*/*UTIL:Empty Player Data~"; break;
+                case "NFL": lineup.SingleLineup = "Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*"; break;
+                case "MLB": lineup.SingleLineup = "Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*"; break;
+                case "PGA": lineup.SingleLineup = "Empty Golfer Data~*/*Empty Golfer Data~*/*Empty Golfer Data~*/*Empty Golfer Data~*/*Empty Golfer Data~*/*Empty Golfer Data~"; break;
+                case "CFB": lineup.SingleLineup = "Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*"; break;
+                default   : lineup.SingleLineup = "Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*"; break;
             }
-            lineup.PlayerList = "*/*";
+            lineup.PlayerList = "noplayers";
             lineup.BaseTitleList = file.BaseTitleList;
             if (ModelState.IsValid)
             {
@@ -175,8 +221,6 @@ namespace RotoSports.Controllers
         }
 
         // POST: Lineups/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,UserId,Title,Sport,Details,SingleLineup,PlayerList")] Lineup lineup)
@@ -211,13 +255,14 @@ namespace RotoSports.Controllers
             List<string[]> allPlayersArrays = new List<string[]>();
             foreach (string player in allLines)
             {
-                string[] details = player.Split(',');
+                string[] details = player.Split('~');
                 List<string> formatted = new List<string>();
                 foreach (string item in details)
                 {
                     string newitem = item.Replace("\"", "");
                     formatted.Add(newitem);
                 }
+                formatted.Remove(formatted[formatted.Count() - 1]);
                 string[] endformat = formatted.ToArray();
                 allPlayersArrays.Add(endformat);
             }
@@ -230,7 +275,7 @@ namespace RotoSports.Controllers
             ViewBag.AllPlayers = allPlayersArrays;
 
             List<string[]> starredPlayers = new List<string[]>();
-            if (lineup.PlayerList != null)
+            if (lineup.PlayerList != "noplayers")
             {
                 ViewBag.NoPlayers = "false";
                 List<string> allstars = lineup.PlayerList.Split(new string[] { "*/*" }, StringSplitOptions.None).ToList();
@@ -253,8 +298,7 @@ namespace RotoSports.Controllers
             }
             List<string> countthestars = new List<string>();
             int countstars = 0;
-            int starcount = starredPlayers.Count();
-            if (starcount != 1)
+            if (lineup.PlayerList != "empty")
             {
                 countthestars = lineup.PlayerList.Split(new string[] { "*/*" }, StringSplitOptions.None).ToList();
                 countthestars.Remove(countthestars[countthestars.Count - 1]);
@@ -271,8 +315,6 @@ namespace RotoSports.Controllers
         }
 
         // POST: Lineups/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Editor([Bind(Include = "ID")] Lineup lineup)
