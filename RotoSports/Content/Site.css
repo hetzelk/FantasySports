@@ -49,3 +49,11 @@ a{
 .floatleft{
     float:left;
 }
+
+.wideButton{
+    width:100%;
+}
+
+.oneThird{
+    width:28%;
+}
