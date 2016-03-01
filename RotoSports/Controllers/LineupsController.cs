@@ -201,18 +201,18 @@ namespace RotoSports.Controllers
             string sport = file.Sport;
             switch (sport)
             {
-                case "NBA": lineup.SingleLineup = "PG:1 Empty Player Data~*/*SG:2 Empty Player Data~*/*SF:3 Empty Player Data~*/*PF:4 Empty Player Data~*/*C:5 Empty Player Data~*/*F:6 Empty Player Data~*/*F:7 Empty Player Data~*/*UTIL:8 Empty Player Data~"; break;
-                case "MMA": lineup.SingleLineup = "Empty Fighter Data~*/*Empty Fighter Data~*/*Empty Fighter Data~*/*Empty Fighter Data~*/*Empty Fighter Data~"; break;
-                case "CBB": lineup.SingleLineup = "G:Empty Player Data~*/*G:Empty Player Data~*/*G:Empty Player Data~*/*F:Empty Player Data~*/*F:Empty Player Data~*/*F:Empty Player Data~*/*UTIL:Empty Player Data~*/*UTIL:Empty Player Data~"; break;
-                case "NHL": lineup.SingleLineup = "C:Empty Player Data~*/*C:Empty Player Data~*/*W:Empty Player Data~*/*W:Empty Player Data~*/*W:Empty Player Data~*/*D:Empty Player Data~*/*D:Empty Player Data~*/*G:Empty Player Data~*/*UTIL:Empty Player Data~"; break;
-                case "NAS": lineup.SingleLineup = "Empty Driver Data~*/*Empty Driver Data~*/*Empty Driver Data~*/*Empty Driver Data~*/*Empty Driver Data~*/*Empty Driver Data~*/*"; break;
-                case "LOL": lineup.SingleLineup = "Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*"; break;
-                case "SOC": lineup.SingleLineup = "GK:Empty Player Data~*/*D:Empty Player Data~*/*D:Empty Player Data~*/*D:Empty Player Data~*/*M:Empty Player Data~*/*M:Empty Player Data~*/*M:Empty Player Data~*/*F:Empty Player Data~*/*F:Empty Player Data~*/*UTIL:Empty Player Data~*/*UTIL:Empty Player Data~"; break;
-                case "NFL": lineup.SingleLineup = "Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*"; break;
-                case "MLB": lineup.SingleLineup = "Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*"; break;
-                case "PGA": lineup.SingleLineup = "Empty Golfer Data~*/*Empty Golfer Data~*/*Empty Golfer Data~*/*Empty Golfer Data~*/*Empty Golfer Data~*/*Empty Golfer Data~"; break;
-                case "CFB": lineup.SingleLineup = "Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*"; break;
-                default   : lineup.SingleLineup = "Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*Empty Player Data~*/*"; break;
+                case "NBA": lineup.SingleLineup = "PG:1 Empty Player Data~~~~~~*/*SG:2 Empty Player Data~~~~~~*/*SF:3 Empty Player Data~~~~~~*/*PF:4 Empty Player Data~~~~~~*/*C:5 Empty Player Data~~~~~~*/*F:6 Empty Player Data~~~~~~*/*F:7 Empty Player Data~~~~~~*/*UTIL:8 Empty Player Data~~~~~~"; break;
+                case "MMA": lineup.SingleLineup = "Empty Fighter Data~~~~~~*/*Empty Fighter Data~~~~~~*/*Empty Fighter Data~~~~~~*/*Empty Fighter Data~~~~~~*/*Empty Fighter Data~~~~~~"; break;
+                case "CBB": lineup.SingleLineup = "G:Empty Player Data~~~~~~*/*G:Empty Player Data~~~~~~*/*G:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~"; break;
+                case "NHL": lineup.SingleLineup = "C:Empty Player Data~~~~~~*/*C:Empty Player Data~~~~~~*/*W:Empty Player Data~~~~~~*/*W:Empty Player Data~~~~~~*/*W:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*G:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~"; break;
+                case "NAS": lineup.SingleLineup = "Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*"; break;
+                case "LOL": lineup.SingleLineup = "Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*"; break;
+                case "SOC": lineup.SingleLineup = "GK:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*M:Empty Player Data~~~~~~*/*M:Empty Player Data~~~~~~*/*M:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~"; break;
+                case "NFL": lineup.SingleLineup = "Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*"; break;
+                case "MLB": lineup.SingleLineup = "Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*"; break;
+                case "PGA": lineup.SingleLineup = "Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~"; break;
+                case "CFB": lineup.SingleLineup = "Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*"; break;
+                default   : lineup.SingleLineup = "Empty Player Data~~~~~~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*"; break;
             }
             lineup.PlayerList = "noplayers";
             lineup.BaseTitleList = file.BaseTitleList;
@@ -264,7 +264,7 @@ namespace RotoSports.Controllers
             }
             Lineup lineup = db.Lineups.Find(id);
             string stringtitlelist = lineup.BaseTitleList;
-            List<string> allLines = lineup.SingleLineup.Split(new string[] { "*/*" }, StringSplitOptions.None).ToList();
+            List<string> SingleLineupLines = lineup.SingleLineup.Split(new string[] { "*/*" }, StringSplitOptions.None).ToList();
             string[] titles = stringtitlelist.Split(',');
 
             List<string> titleList = new List<string>();
@@ -274,7 +274,7 @@ namespace RotoSports.Controllers
                 titleList.Add(newtitle);
             }
             List<string[]> allPlayersArrays = new List<string[]>();
-            foreach (string player in allLines)
+            foreach (string player in SingleLineupLines)
             {
                 string[] details = player.Split('~');
                 List<string> formatted = new List<string>();
@@ -287,12 +287,12 @@ namespace RotoSports.Controllers
                 string[] endformat = formatted.ToArray();
                 allPlayersArrays.Add(endformat);
             }
-            int countlines = allLines.Count;
+            int countlines = SingleLineupLines.Count;
             int titletotal = titleList.Count;
             ViewBag.Titles = titleList;
             ViewBag.Total = countlines;
             ViewBag.TitleTotal = titletotal;
-            ViewBag.AllLines = allLines;
+            ViewBag.AllLines = SingleLineupLines;
             ViewBag.AllPlayers = allPlayersArrays;
 
             List<string[]> starredPlayers = new List<string[]>();
@@ -332,6 +332,32 @@ namespace RotoSports.Controllers
             }
             ViewBag.TotalStars = countstars;
             ViewBag.StarPlayers = starredPlayers;
+            int totalSalary = 0;
+            int i = 0;
+            string[] current;
+            foreach (string[] current in allPlayersArrays)
+            {
+                if (current[2].GetType() != typeof(int))
+                {
+                    //do nothing
+                }
+                else
+                {
+                    totalSalary += Convert.ToInt32(current[2]);
+                }
+                i++;
+            }
+            string stringmoney = "$" + totalSalary.ToString("C0");
+            ViewBag.TotalSalary = stringmoney;
+            ViewBag.RemainingSalary = totalSalary - 50000;
+            if (totalSalary - 50000 >= -1)
+            {
+                ViewBag.Red = true;
+            }
+            else
+            {
+                ViewBag.Red = false;
+            }
             return View(lineup);
         }
 
