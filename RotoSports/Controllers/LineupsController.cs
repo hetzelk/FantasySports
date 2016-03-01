@@ -137,6 +137,27 @@ namespace RotoSports.Controllers
             ViewBag.Titles = titleList;
             ViewBag.Total = countlines;
             ViewBag.AllPlayers = allPlayersArrays;
+
+            string detailsOne = "";
+            string detailsTwo = "";
+            string sport = lineup.Sport;
+            switch (sport)
+            {
+                case "NBA": detailsOne = "The Positions required for NBA is PG, SG, SF, PF, C, G, F, UTIL. "; detailsTwo = "PG/SG can be in the G position.<br>SF/PF can be in the F position.<br>Any player can be in the UTIL Position.<br>Make sure to put the players in the correct positions."; break;
+                case "MMA": detailsOne = "There are 5 positions required for a MMA lineup. "; detailsTwo = "You can pick fighters from the same fight.\nThey can be in any position."; break;
+                case "CBB": detailsOne = "The Positions required for CBB is G, G, G, F, F, F, UTIL, UTIL. "; detailsTwo = "Any players can be in the UTIL positions.\nMake sure to put the players in the correct positions."; break;
+                case "NHL": detailsOne = "The Positions required for NHL is C, C, W, W, W, D, D, G, UTIL. "; detailsTwo = "The W positions can be RW or LW players.\nMake sure to put the players in the correct positions."; break;
+                case "NAS": detailsOne = "There are 5 positions required for NAS. "; detailsTwo = "They can be in any position."; break;
+                case "LOL": detailsOne = "The Positions required for LOL is TOP, JNG, MID, ADC, SUP, FLEX, FLEX, TEAM. "; detailsTwo = "The players must be in the correct positions.\nAny players can be used in the FLEX positions.\nPick 1 team.\nMake sure to put the players in the correct positions."; break;
+                case "SOC": detailsOne = "The Positions required for SOC is GK, D, D, D, M, M, M, F, F, UTIL, UTIL. "; detailsTwo = "GK can not be used in the UTIL positions.\nD, M, & F can be used in the UTIL positions.\nMake sure to put the players in the correct positions."; break;
+                case "NFL": detailsOne = "The Positions required for NFL is QB, RB, RB, WR, WR, WR, TE, FLEX, DST. "; detailsTwo = "The QB cannot be used in the FLEX.\nEvery other position can be used in the FLEX.\nPick one DST.\nMake sure to put the players in the correct positions."; break;
+                case "MLB": detailsOne = "The Positions required for MLB is P, P, C, 1B, 2B, 3B, OF, OF, OF. "; detailsTwo = "The W positions can be RW or LW players."; break;
+                case "PGA": detailsOne = "There are 6 positions required for a PGA lineup. "; detailsTwo = "They can be in any position"; break;
+                case "CFB": detailsOne = "The Positions required for NFL is QB, QB, RB, RB, WR, WR, WR, FLEX, FLEX. "; detailsTwo = "The QB cannot be used in the FLEX.\nThe other 2 positions can be used in the FLEX.\nMake sure to put the players in the correct positions."; break;
+                default: detailsOne = "Go back and make sure you did your file and lineup properly"; detailsTwo = "Sorry about that."; break;
+            }
+            ViewBag.Details1 = detailsOne;
+            ViewBag.Details2 = detailsTwo;
             return View(lineup);
         }
         // GET: Lineups/Star/5$playerdetails
@@ -205,18 +226,18 @@ namespace RotoSports.Controllers
             string sport = file.Sport;
             switch (sport)
             {
-                case "NBA": lineup.SingleLineup = "PG:1 Empty Player Data~~~~~~*/*SG:2 Empty Player Data~~~~~~*/*SF:3 Empty Player Data~~~~~~*/*PF:4 Empty Player Data~~~~~~*/*C:5 Empty Player Data~~~~~~*/*F:6 Empty Player Data~~~~~~*/*F:7 Empty Player Data~~~~~~*/*UTIL:8 Empty Player Data~~~~~~"; break;
-                case "MMA": lineup.SingleLineup = "Empty Fighter Data~~~~~~*/*Empty Fighter Data~~~~~~*/*Empty Fighter Data~~~~~~*/*Empty Fighter Data~~~~~~*/*Empty Fighter Data~~~~~~"; break;
-                case "CBB": lineup.SingleLineup = "G:Empty Player Data~~~~~~*/*G:Empty Player Data~~~~~~*/*G:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~"; break;
-                case "NHL": lineup.SingleLineup = "C:Empty Player Data~~~~~~*/*C:Empty Player Data~~~~~~*/*W:Empty Player Data~~~~~~*/*W:Empty Player Data~~~~~~*/*W:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*G:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~"; break;
-                case "NAS": lineup.SingleLineup = "Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*"; break;
-                case "LOL": lineup.SingleLineup = "Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*"; break;
-                case "SOC": lineup.SingleLineup = "GK:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*M:Empty Player Data~~~~~~*/*M:Empty Player Data~~~~~~*/*M:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~"; break;
-                case "NFL": lineup.SingleLineup = "Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*"; break;
-                case "MLB": lineup.SingleLineup = "Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*"; break;
-                case "PGA": lineup.SingleLineup = "Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~"; break;
-                case "CFB": lineup.SingleLineup = "Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*"; break;
-                default   : lineup.SingleLineup = "Empty Player Data~~~~~~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*"; break;
+case "NBA": lineup.SingleLineup = "PG:1 Empty Player Data~~~~~~*/*SG:2 Empty Player Data~~~~~~*/*SF:3 Empty Player Data~~~~~~*/*PF:4 Empty Player Data~~~~~~*/*C:5 Empty Player Data~~~~~~*/*F:6 Empty Player Data~~~~~~*/*F:7 Empty Player Data~~~~~~*/*UTIL:8 Empty Player Data~~~~~~"; break;
+case "MMA": lineup.SingleLineup = "Empty Fighter Data~~~~~~*/*Empty Fighter Data~~~~~~*/*Empty Fighter Data~~~~~~*/*Empty Fighter Data~~~~~~*/*Empty Fighter Data~~~~~~"; break;
+case "CBB": lineup.SingleLineup = "G:Empty Player Data~~~~~~*/*G:Empty Player Data~~~~~~*/*G:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~"; break;
+case "NHL": lineup.SingleLineup = "C:Empty Player Data~~~~~~*/*C:Empty Player Data~~~~~~*/*W:Empty Player Data~~~~~~*/*W:Empty Player Data~~~~~~*/*W:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*G:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~"; break;
+case "NAS": lineup.SingleLineup = "Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*"; break;
+case "LOL": lineup.SingleLineup = "Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*"; break;
+case "SOC": lineup.SingleLineup = "GK:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*M:Empty Player Data~~~~~~*/*M:Empty Player Data~~~~~~*/*M:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~"; break;
+case "NFL": lineup.SingleLineup = "QB:Empty Player Data~~~~~~*/*RB:Empty Player Data~~~~~~*/*RB:Empty Player Data~~~~~~*/*WR:Empty Player Data~~~~~~*/*WR:Empty Player Data~~~~~~*/*WR:Empty Player Data~~~~~~*/*TE:Empty Player Data~~~~~~*/*FLEX:Empty Player Data~~~~~~*/*DST:Empty Player Data~~~~~~*/*"; break;
+case "MLB": lineup.SingleLineup = "P:Empty Player Data~~~~~~*/*P:Empty Player Data~~~~~~*/*C:Empty Player Data~~~~~~*/*1B:Empty Player Data~~~~~~*/*2B:Empty Player Data~~~~~~*/*3B:Empty Player Data~~~~~~*/*OF:Empty Player Data~~~~~~*/*OF:Empty Player Data~~~~~~*/*OF:Empty Player Data~~~~~~*/*"; break;
+case "PGA": lineup.SingleLineup = "Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~"; break;
+case "CFB": lineup.SingleLineup = "QB:Empty Player Data~~~~~~*/*QB:Empty Player Data~~~~~~*/*RB:Empty Player Data~~~~~~*/*RB:Empty Player Data~~~~~~*/*WR:Empty Player Data~~~~~~*/*WR:Empty Player Data~~~~~~*/*WR:Empty Player Data~~~~~~*/*FLEX:Empty Player Data~~~~~~*/*FLEX:Empty Player Data~~~~~~*/*"; break;
+default   : lineup.SingleLineup = "Empty Player Data~~~~~~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*"; break;
             }
             lineup.PlayerList = "noplayers";
             lineup.BaseTitleList = file.BaseTitleList;
@@ -402,6 +423,46 @@ namespace RotoSports.Controllers
             if (lineup == null)
             {
                 return HttpNotFound();
+            }
+            return View(lineup);
+        }
+
+        public ActionResult RemovePlayer(int? id, string playerinput, int position)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
+            Lineup lineup = db.Lineups.Find(id);
+            if (lineup == null || playerinput == "")
+            {
+                return RedirectToAction("Index");
+            }
+
+            List<string> currentlineup = lineup.SingleLineup.Split(new string[] { "*/*" }, StringSplitOptions.None).ToList();
+            string singlelineup = "";
+            for (int i = 0; i < currentlineup.Count(); i++)
+            {
+                if (currentlineup[i].Length <= 3)
+                {
+                    //do not add to string
+                }
+                else if (i == position)
+                {
+                    singlelineup += "Empty Player Data~~~~~~*/*";
+                }
+                else
+                {
+                    singlelineup += currentlineup[i] + "*/*";
+                }
+
+            }
+            lineup.SingleLineup = singlelineup;
+            if (ModelState.IsValid)
+            {
+                db.Entry(lineup).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Editor", "Lineups", new { id = id });
             }
             return View(lineup);
         }
