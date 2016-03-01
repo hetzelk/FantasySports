@@ -358,20 +358,21 @@ namespace RotoSports.Controllers
                     //do nothing
                 }
             }
-            bool isRed = true;
+            string YouAreBroke = "false";
             string stringmoney = totalSalary.ToString("C0");
-            string remainingSalary = (50000 - totalSalary).ToString("C0");
+            int remainder = 50000 - totalSalary;
+            string remainingSalary = (remainder).ToString("C0");
             ViewBag.TotalSalary = stringmoney;
             ViewBag.RemainingSalary = remainingSalary;
-            if (50000 - totalSalary <= -1)
+            if (remainder <= -1)
             {
-                isRed = false;
+                YouAreBroke = "true";
             }
             else
             {
-                isRed = true;
+                YouAreBroke = "false";
             }
-            ViewBag.Red = isRed;
+            ViewBag.YouAreBrokeRed = YouAreBroke;
             return View(lineup);
         }
 
