@@ -132,7 +132,7 @@ namespace RotoSports.Controllers
                 string[] endformat = formatted.ToArray();
                 allPlayersArrays.Add(endformat);
             }
-            int countlines = allLines.Count;
+            int countlines = allPlayersArrays.Count;
             int titletotal = titleList.Count;
             ViewBag.Titles = titleList;
             ViewBag.Total = countlines;
@@ -156,7 +156,11 @@ namespace RotoSports.Controllers
             string singlelineup = "";
             for (int i = 0; i < currentlineup.Count(); i++)
             {
-                if (i == position)
+                if (currentlineup[i].Length <= 3)
+                {
+                    //do not add to string
+                }
+                else if (i == position)
                 {
                     singlelineup += playerinput + "*/*";
                 }
@@ -285,9 +289,16 @@ namespace RotoSports.Controllers
                 }
                 formatted.Remove(formatted[formatted.Count() - 1]);
                 string[] endformat = formatted.ToArray();
-                allPlayersArrays.Add(endformat);
+                if (endformat.Count() <=2)
+                {
+                    //do not add
+                }
+                else
+                {
+                    allPlayersArrays.Add(endformat);
+                }
             }
-            int countlines = SingleLineupLines.Count;
+            int countlines = allPlayersArrays.Count;
             int titletotal = titleList.Count;
             ViewBag.Titles = titleList;
             ViewBag.Total = countlines;
@@ -333,31 +344,34 @@ namespace RotoSports.Controllers
             ViewBag.TotalStars = countstars;
             ViewBag.StarPlayers = starredPlayers;
             int totalSalary = 0;
-            int i = 0;
-            string[] current;
-            foreach (string[] current in allPlayersArrays)
+            for (int i = 0; i < allPlayersArrays.Count(); i++)
             {
-                if (current[2].GetType() != typeof(int))
+                string[] current = allPlayersArrays[i];
+                int nextsalary;
+                bool result = Int32.TryParse(current[2], out nextsalary);
+                if (result)
                 {
-                    //do nothing
+                    totalSalary += nextsalary;
                 }
                 else
                 {
-                    totalSalary += Convert.ToInt32(current[2]);
+                    //do nothing
                 }
-                i++;
             }
-            string stringmoney = "$" + totalSalary.ToString("C0");
+            bool isRed = true;
+            string stringmoney = totalSalary.ToString("C0");
+            string remainingSalary = (50000 - totalSalary).ToString("C0");
             ViewBag.TotalSalary = stringmoney;
-            ViewBag.RemainingSalary = totalSalary - 50000;
-            if (totalSalary - 50000 >= -1)
+            ViewBag.RemainingSalary = remainingSalary;
+            if (50000 - totalSalary <= -1)
             {
-                ViewBag.Red = true;
+                isRed = false;
             }
             else
             {
-                ViewBag.Red = false;
+                isRed = true;
             }
+            ViewBag.Red = isRed;
             return View(lineup);
         }
 
