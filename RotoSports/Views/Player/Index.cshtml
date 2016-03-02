@@ -2,9 +2,32 @@
     ViewBag.Title = "RotoSports Home Page";
 }
 
-<div class="jumbotron">
-    <h1 class="titletext KrinkesFont">RotoSports6</h1>
-    <p class="lead">Player Name</p>
+<div class="well well-lg">
+    <h1 class="titletext KrinkesFont">@ViewBag.PlayerName</h1>
+    <h4>@ViewBag.PlayerID</h4>
 </div>
+<div class="row">
+    <div class="alert alert-info col-md-3" role="alert">
+        @foreach (string line in ViewBag.PlayerInfoList)
+        {
 
-<p>@ViewBag.PlayerInfo</p>
+            string[] bolded = line.Split(':');
+            <p><span class="bold">@bolded[0]</span>&nbsp;&nbsp;:&nbsp;&nbsp;@bolded[1]</p>
+
+        }
+    </div>
+
+
+
+    @if (ViewBag.Injury == "true")
+    {
+        <div class="alert alert-danger col-md-0ffset-1 col-md-4" role="alert">
+            <p style="font-size:2em;">Injury Report</p>
+            @foreach (string line in ViewBag.InjuryList)
+            {
+                string[] bolded = line.Split(':');
+                <p><span class="bold">@bolded[0]</span>&nbsp;&nbsp;:&nbsp;&nbsp;@bolded[1]</p>
+            }
+        </div>
+    }
+</div>

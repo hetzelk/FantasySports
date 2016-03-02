@@ -143,7 +143,7 @@ namespace RotoSports.Controllers
             string sport = lineup.Sport;
             switch (sport)
             {
-                case "NBA": detailsOne = "The Positions required for NBA is PG, SG, SF, PF, C, G, F, UTIL. "; detailsTwo = "PG/SG can be in the G position.<br>SF/PF can be in the F position.<br>Any player can be in the UTIL Position.<br>Make sure to put the players in the correct positions."; break;
+                case "NBA": detailsOne = "The Positions required for NBA is PG, SG, SF, PF, C, G, F, UTIL. "; detailsTwo = "PG/SG can be in the G position. SF/PF can be in the F position. Any player can be in the UTIL Position. Make sure to put the players in the correct positions."; break;
                 case "MMA": detailsOne = "There are 5 positions required for a MMA lineup. "; detailsTwo = "You can pick fighters from the same fight.\nThey can be in any position."; break;
                 case "CBB": detailsOne = "The Positions required for CBB is G, G, G, F, F, F, UTIL, UTIL. "; detailsTwo = "Any players can be in the UTIL positions.\nMake sure to put the players in the correct positions."; break;
                 case "NHL": detailsOne = "The Positions required for NHL is C, C, W, W, W, D, D, G, UTIL. "; detailsTwo = "The W positions can be RW or LW players.\nMake sure to put the players in the correct positions."; break;

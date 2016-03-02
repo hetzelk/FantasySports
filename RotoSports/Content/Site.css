@@ -57,3 +57,7 @@ a{
 .oneThird{
     width:28%;
 }
+
+.bold{
+    font-weight:bold;
+}

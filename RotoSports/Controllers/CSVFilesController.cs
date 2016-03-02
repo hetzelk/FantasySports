@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using RotoSports.Models;
 using Microsoft.AspNet.Identity;
 using System.Web.UI.WebControls;
+using System.Net.Http;
 
 namespace RotoSports.Controllers
 {
@@ -25,7 +26,7 @@ namespace RotoSports.Controllers
         }
 
         // GET: CSVFiles/Details/5
-        public ActionResult Details(int? id)//<a href="@(Url.Action("Details", "CSVFiles", new { sortby = title }))">@title</a> this is for the sorting link
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -84,6 +85,10 @@ namespace RotoSports.Controllers
         // GET: CSVFiles/Create
         public ActionResult Create(string sport)
         {
+            if(sport == null)
+            {
+                return RedirectToAction("Index", "Sports", null);
+            }
             var UserID = User.Identity.GetUserId();
             ViewBag.UserId = UserID;
             ViewBag.SportName = sport;
@@ -95,7 +100,7 @@ namespace RotoSports.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,UserId,Title,Sport,Details,File")] CSVFiles thisCSVFile)
+        public ActionResult Create([Bind(Include = "ID,UserId,Title,Sport,Details,File,GameDate")] CSVFiles thisCSVFile)
         {
             string[] lines = thisCSVFile.File.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             string endFile = "";

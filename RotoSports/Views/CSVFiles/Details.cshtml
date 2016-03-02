@@ -39,6 +39,9 @@
 <p>
     @Html.ActionLink("Back to List", "Index")
 </p>
+<!--
+<button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">More Stats</button>
+<input type="button" value="Traži" id="loadData" onclick='getview(parameter)' />-->
 
 <table class="table">
 
@@ -69,8 +72,8 @@
 
             <td>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Add <span class="caret"></span>
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Add <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     </button>
                     <ul class="dropdown-menu">
                         @foreach (var item in ViewBag.UserLineups)
@@ -82,10 +85,10 @@
                         <li>@Html.ActionLink("Create New Lineup", "Create", "Lineups", new { id = Model.ID }, null)</li>
                     </ul>
                 </div>
-                <a href="~/Lineups/MoreStats/@wholePlayer" class="btn btn-info">More Stats</a>
+                <a class ="btn btn-success" href="@Url.Action("Index", "Player", new { player = wholePlayer }, null)">Stats <span class="glyphicon glyphicon-stats" aria-hidden="true"></span></a>
                 <div class="btn-group">
                     <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Star <span class="caret"></span>
+                        Star <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
                     </button>
                     <ul class="dropdown-menu">
                         @foreach (var item in ViewBag.UserLineups)
@@ -103,4 +106,3 @@
 
 </table>
 
-<!--<a href="/Lineups/Star?item.Key$wholePlayer">item.Value</a>-->
