@@ -171,6 +171,8 @@
     <Compile Include="Controllers\CSVFilesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LineupsController.cs" />
+    <Compile Include="Controllers\OAuthBase.cs" />
+    <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\SportsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -288,6 +290,8 @@
     <Content Include="Views\Lineups\Add.cshtml" />
     <Content Include="Views\Lineups\AddPlayer.cshtml" />
     <Content Include="Views\Lineups\RemovePlayer.cshtml" />
+    <Content Include="Views\Player\Index.cshtml" />
+    <Content Include="Views\Player\InvalidRequest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
