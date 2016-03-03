@@ -310,6 +310,7 @@ namespace RotoSports.Controllers
             {
                 return RedirectToAction("Index");
             }
+            GetPlayerList();
             Lineup lineup = db.Lineups.Find(id);
             string stringtitlelist = lineup.BaseTitleList;
             List<string> SingleLineupLines = lineup.SingleLineup.Split(new string[] { "*/*" }, StringSplitOptions.None).ToList();
@@ -439,7 +440,7 @@ namespace RotoSports.Controllers
             }
             else
             {//get past fantasy stats
-                totalfantasypoints = 999;
+                totalfantasypoints = GetPastFantsyStats(id);
                 ViewBag.TotalFantasyPoints = totalfantasypoints;
                 ViewBag.ProjectedPast = "Earned Fantasy Points: ";
             }
@@ -542,7 +543,6 @@ namespace RotoSports.Controllers
 
         public decimal GetAllFantasyPoints(int? lineupid)
         {
-            GetPlayerList();
             decimal total = 0;
             Lineup lineup = db.Lineups.Find(lineupid);
             List<string> currentlineup = lineup.SingleLineup.Split(new string[] { "*/*" }, StringSplitOptions.None).ToList();
@@ -566,6 +566,31 @@ namespace RotoSports.Controllers
             return total;
         }
 
+        public decimal GetPastFantsyStats(int? lineupid)
+        {
+            decimal total = 0;
+            Lineup lineup = db.Lineups.Find(lineupid);
+            List<string> currentlineup = lineup.SingleLineup.Split(new string[] { "*/*" }, StringSplitOptions.None).ToList();
+            CSVFiles thisfile = db.CSVFiles.Find(Convert.ToInt32(lineup.FileConnection));
+            string date = thisfile.GameDate;
+            foreach (string player in currentlineup)
+            {
+                if (player.Contains("empty") || player.Contains("Empty") || player.Length <= 3)
+                {
+                    //don't do stuff
+                }
+                else
+                {
+                    List<string> thisplayer = player.Split('~').ToList();
+                    string playername = thisplayer[1];
+                    string[] fullname = thisplayer[1].Split(' ');
+                    string playerid = SearchPlayer(fullname[0], fullname[1]);
+                    total += PlayerPastStats(date, playerid);
+                }
+            }
+            return total;
+        }
+
         public decimal PlayerProjection(string date, string playerid)
         {
             var client = new HttpClient();
@@ -582,7 +607,36 @@ namespace RotoSports.Controllers
             HttpContent requestContent = word.Content;
             string jsonContent = requestContent.ReadAsStringAsync().Result;
             string currentJson = jsonContent;
-            
+
+            List<string> playerDetailList = currentJson.Split(',').ToList();
+            foreach (string detail in playerDetailList)
+            {
+                if (detail.Contains("FantasyPointsDraftKings"))
+                {
+                    string[] fantasy = detail.Split(':');
+                    fantasypoints = Convert.ToDecimal(fantasy[1]);
+                }
+            }
+            return fantasypoints;
+        }
+
+        public decimal PlayerPastStats(string date, string playerid)
+        {
+            var client = new HttpClient();
+            decimal fantasypoints = 0;
+            var queryString = HttpUtility.ParseQueryString(string.Empty);
+            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", PrimaryKey);
+            string baseurl = "https://api.fantasydata.net/nba/v2/JSON/PlayerGameStatsByPlayer/" + date + "/" + playerid;
+            var uri = baseurl;
+
+            var response = client.GetAsync(uri);
+
+            var word = response.Result;
+
+            HttpContent requestContent = word.Content;
+            string jsonContent = requestContent.ReadAsStringAsync().Result;
+            string currentJson = jsonContent;
+
             List<string> playerDetailList = currentJson.Split(',').ToList();
             foreach (string detail in playerDetailList)
             {
