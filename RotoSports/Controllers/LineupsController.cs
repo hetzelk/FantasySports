@@ -444,8 +444,22 @@ namespace RotoSports.Controllers
                 ViewBag.TotalFantasyPoints = totalfantasypoints;
                 ViewBag.ProjectedPast = "Earned Fantasy Points: ";
             }
-
-
+            decimal totalAverage = 0;
+            for (int i = 0; i < allPlayersArrays.Count(); i++)
+            {
+                string[] current = allPlayersArrays[i];
+                decimal nextavg;
+                bool result = Decimal.TryParse(current[4], out nextavg);
+                if (result)
+                {
+                    totalAverage += nextavg;
+                }
+                else
+                {
+                    //do nothing
+                }
+            }
+            ViewBag.TotalAverage = totalAverage;
             List<string> reqpositions = lineup.RequiredPositions.Split(',').ToList();
             ViewBag.RequiredPositions = reqpositions;
             return View(lineup);
