@@ -124,16 +124,23 @@ namespace RotoSports.Controllers
             List<string[]> allPlayersArrays = new List<string[]>();
             foreach (string player in allLines)
             {
-                string[] details = player.Split('~');
-                List<string> formatted = new List<string>();
-                foreach (string item in details)
+                if (player.Length <=3)
                 {
-                    string newitem = item.Replace("\"", "");
-                    formatted.Add(newitem);
+                    //do nothing
                 }
-                formatted.Remove(formatted[formatted.Count() - 1]);
-                string[] endformat = formatted.ToArray();
-                allPlayersArrays.Add(endformat);
+                else
+                {
+                    string[] details = player.Split('~');
+                    List<string> formatted = new List<string>();
+                    foreach (string item in details)
+                    {
+                        string newitem = item.Replace("\"", "");
+                        formatted.Add(newitem);
+                    }
+                    formatted.Remove(formatted[formatted.Count() - 1]);
+                    string[] endformat = formatted.ToArray();
+                    allPlayersArrays.Add(endformat);
+                }
             }
             int countlines = allPlayersArrays.Count;
             int titletotal = titleList.Count;
@@ -161,6 +168,7 @@ namespace RotoSports.Controllers
             }
             ViewBag.Details1 = detailsOne;
             ViewBag.Details2 = detailsTwo;
+            ViewBag.RequiredPositions = lineup.RequiredPositions.Split(',').ToList();
             return View(lineup);
         }
         // GET: Lineups/Star/5$playerdetails
@@ -229,18 +237,30 @@ namespace RotoSports.Controllers
             string sport = file.Sport;
             switch (sport)
             {
-case "NBA": lineup.SingleLineup = "PG:1 Empty Player Data~~~~~~*/*SG:2 Empty Player Data~~~~~~*/*SF:3 Empty Player Data~~~~~~*/*PF:4 Empty Player Data~~~~~~*/*C:5 Empty Player Data~~~~~~*/*F:6 Empty Player Data~~~~~~*/*F:7 Empty Player Data~~~~~~*/*UTIL:8 Empty Player Data~~~~~~"; break;
-case "MMA": lineup.SingleLineup = "Empty Fighter Data~~~~~~*/*Empty Fighter Data~~~~~~*/*Empty Fighter Data~~~~~~*/*Empty Fighter Data~~~~~~*/*Empty Fighter Data~~~~~~"; break;
-case "CBB": lineup.SingleLineup = "G:Empty Player Data~~~~~~*/*G:Empty Player Data~~~~~~*/*G:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~"; break;
-case "NHL": lineup.SingleLineup = "C:Empty Player Data~~~~~~*/*C:Empty Player Data~~~~~~*/*W:Empty Player Data~~~~~~*/*W:Empty Player Data~~~~~~*/*W:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*G:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~"; break;
-case "NAS": lineup.SingleLineup = "Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*"; break;
-case "LOL": lineup.SingleLineup = "Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*"; break;
-case "SOC": lineup.SingleLineup = "GK:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*M:Empty Player Data~~~~~~*/*M:Empty Player Data~~~~~~*/*M:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~"; break;
-case "NFL": lineup.SingleLineup = "QB:Empty Player Data~~~~~~*/*RB:Empty Player Data~~~~~~*/*RB:Empty Player Data~~~~~~*/*WR:Empty Player Data~~~~~~*/*WR:Empty Player Data~~~~~~*/*WR:Empty Player Data~~~~~~*/*TE:Empty Player Data~~~~~~*/*FLEX:Empty Player Data~~~~~~*/*DST:Empty Player Data~~~~~~*/*"; break;
-case "MLB": lineup.SingleLineup = "P:Empty Player Data~~~~~~*/*P:Empty Player Data~~~~~~*/*C:Empty Player Data~~~~~~*/*1B:Empty Player Data~~~~~~*/*2B:Empty Player Data~~~~~~*/*3B:Empty Player Data~~~~~~*/*OF:Empty Player Data~~~~~~*/*OF:Empty Player Data~~~~~~*/*OF:Empty Player Data~~~~~~*/*"; break;
-case "PGA": lineup.SingleLineup = "Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~"; break;
-case "CFB": lineup.SingleLineup = "QB:Empty Player Data~~~~~~*/*QB:Empty Player Data~~~~~~*/*RB:Empty Player Data~~~~~~*/*RB:Empty Player Data~~~~~~*/*WR:Empty Player Data~~~~~~*/*WR:Empty Player Data~~~~~~*/*WR:Empty Player Data~~~~~~*/*FLEX:Empty Player Data~~~~~~*/*FLEX:Empty Player Data~~~~~~*/*"; break;
-default   : lineup.SingleLineup = "Empty Player Data~~~~~~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*"; break;
+                case "NBA": lineup.SingleLineup = "PG:1 Empty Player Data~~~~~~*/*SG:2 Empty Player Data~~~~~~*/*SF:3 Empty Player Data~~~~~~*/*PF:4 Empty Player Data~~~~~~*/*C:5 Empty Player Data~~~~~~*/*F:6 Empty Player Data~~~~~~*/*F:7 Empty Player Data~~~~~~*/*UTIL:8 Empty Player Data~~~~~~";
+                    lineup.RequiredPositions = "PG,SG,SF,PF,C,G,F,UTIL"; break;
+                case "MMA": lineup.SingleLineup = "Empty Fighter Data~~~~~~*/*Empty Fighter Data~~~~~~*/*Empty Fighter Data~~~~~~*/*Empty Fighter Data~~~~~~*/*Empty Fighter Data~~~~~~";
+                    lineup.RequiredPositions = "F,F,F,F,F"; break;
+                case "CBB": lineup.SingleLineup = "G:Empty Player Data~~~~~~*/*G:Empty Player Data~~~~~~*/*G:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~";
+                    lineup.RequiredPositions = "G,G,G,F,F,F,UTIL,UTIL"; break;
+                case "NHL": lineup.SingleLineup = "C:Empty Player Data~~~~~~*/*C:Empty Player Data~~~~~~*/*W:Empty Player Data~~~~~~*/*W:Empty Player Data~~~~~~*/*W:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*G:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~";
+                    lineup.RequiredPositions = "C,C,W,W,W,D,D,G,UTIL"; break;
+                case "NAS": lineup.SingleLineup = "Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*Empty Driver Data~~~~~~*/*";
+                    lineup.RequiredPositions = "D,D,D,D,D"; break;
+                case "LOL": lineup.SingleLineup = "Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*";
+                    lineup.RequiredPositions = "TOP,JNG,MID,ADC,SUP,FLEX,FLEX,TEAM"; break;
+                case "SOC": lineup.SingleLineup = "GK:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*D:Empty Player Data~~~~~~*/*M:Empty Player Data~~~~~~*/*M:Empty Player Data~~~~~~*/*M:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*F:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~*/*UTIL:Empty Player Data~~~~~~";
+                    lineup.RequiredPositions = "GK,D,D,D,M,M,M,F,F,UTIL,UTIL"; break;
+                case "NFL": lineup.SingleLineup = "QB:Empty Player Data~~~~~~*/*RB:Empty Player Data~~~~~~*/*RB:Empty Player Data~~~~~~*/*WR:Empty Player Data~~~~~~*/*WR:Empty Player Data~~~~~~*/*WR:Empty Player Data~~~~~~*/*TE:Empty Player Data~~~~~~*/*FLEX:Empty Player Data~~~~~~*/*DST:Empty Player Data~~~~~~*/*";
+                    lineup.RequiredPositions = "QB,RB,RB,WR,WR,WR,TE,FLEX,DST"; break;
+                case "MLB": lineup.SingleLineup = "P:Empty Player Data~~~~~~*/*P:Empty Player Data~~~~~~*/*C:Empty Player Data~~~~~~*/*1B:Empty Player Data~~~~~~*/*2B:Empty Player Data~~~~~~*/*3B:Empty Player Data~~~~~~*/*OF:Empty Player Data~~~~~~*/*OF:Empty Player Data~~~~~~*/*OF:Empty Player Data~~~~~~*/*";
+                    lineup.RequiredPositions = "P,P,C,1B,2B,3B,OF,OF,OF"; break;
+                case "PGA": lineup.SingleLineup = "Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~*/*Empty Golfer Data~~~~~~";
+                    lineup.RequiredPositions = "G,G,G,G,G,G"; break;
+                case "CFB": lineup.SingleLineup = "QB:Empty Player Data~~~~~~*/*QB:Empty Player Data~~~~~~*/*RB:Empty Player Data~~~~~~*/*RB:Empty Player Data~~~~~~*/*WR:Empty Player Data~~~~~~*/*WR:Empty Player Data~~~~~~*/*WR:Empty Player Data~~~~~~*/*FLEX:Empty Player Data~~~~~~*/*FLEX:Empty Player Data~~~~~~*/*";
+                    lineup.RequiredPositions = "QB,QB,RB,RB,WR,WR,WR,FLEX,FLEX"; break;
+                default   : lineup.SingleLineup = "Empty Player Data~~~~~~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*Empty Player Data~~~~~~*/*";
+                    lineup.RequiredPositions = "P,P,P,P,P,P,P,P,P,P"; break;
             }
             lineup.PlayerList = "noplayers";
             lineup.BaseTitleList = file.BaseTitleList;
@@ -397,8 +417,36 @@ default   : lineup.SingleLineup = "Empty Player Data~~~~~~~~~~~*/*Empty Player D
                 YouAreBroke = "false";
             }
             ViewBag.YouAreBrokeRed = YouAreBroke;
-            decimal totalfantasypoints = GetAllFantasyPoints(id);
-            ViewBag.TotalFantasyPoints = totalfantasypoints;
+
+            DateTime TodayDateTime = DateTime.Now.Date;
+            string today = TodayDateTime.ToString();
+            string[] dateonly = today.Split(' ');
+            string[] numbers = dateonly[0].Split('/');
+            string ttoday = numbers[2] + "-" + numbers[0] + "-" + numbers[1];
+            ViewBag.Today = today;
+            
+            CSVFiles thisfile = db.CSVFiles.Find(Convert.ToInt32(lineup.FileConnection));
+            string[] filedatearray = thisfile.GameDate.Split('-');
+            string newdate = filedatearray[1] + "/" + filedatearray[2] + "/" + filedatearray[0];
+            DateTime FileDate = Convert.ToDateTime(newdate);
+            ViewBag.FileDate = FileDate.ToString();
+            decimal totalfantasypoints = 0;
+            if (FileDate >= TodayDateTime)
+            {//get fantasy predictions
+                totalfantasypoints = GetAllFantasyPoints(id);
+                ViewBag.TotalFantasyPoints = totalfantasypoints;
+                ViewBag.ProjectedPast = "Projected Fantasy Points: ";
+            }
+            else
+            {//get past fantasy stats
+                totalfantasypoints = 999;
+                ViewBag.TotalFantasyPoints = totalfantasypoints;
+                ViewBag.ProjectedPast = "Earned Fantasy Points: ";
+            }
+
+
+            List<string> reqpositions = lineup.RequiredPositions.Split(',').ToList();
+            ViewBag.RequiredPositions = reqpositions;
             return View(lineup);
         }
 

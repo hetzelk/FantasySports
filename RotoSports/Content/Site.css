@@ -50,6 +50,10 @@ a{
     float:left;
 }
 
+.floatright{
+    float:right;
+}
+
 .wideButton{
     width:100%;
 }

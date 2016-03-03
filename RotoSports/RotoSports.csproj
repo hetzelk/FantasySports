@@ -206,6 +206,10 @@
     <Compile Include="Migrations\201603022251223_eighthmigration.Designer.cs">
       <DependentUpon>201603022251223_eighthmigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603031642022_ninthmigration.cs" />
+    <Compile Include="Migrations\201603031642022_ninthmigration.Designer.cs">
+      <DependentUpon>201603031642022_ninthmigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CSVFiles.cs" />
@@ -331,6 +335,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603022251223_eighthmigration.resx">
       <DependentUpon>201603022251223_eighthmigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603031642022_ninthmigration.resx">
+      <DependentUpon>201603031642022_ninthmigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

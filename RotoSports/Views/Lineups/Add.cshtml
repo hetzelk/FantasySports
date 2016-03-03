@@ -17,6 +17,7 @@
 <table class="table table-hover">
 
     <tr>
+        <th></th>
         @foreach (var title in ViewBag.Titles)
         {
             <th>
@@ -34,6 +35,7 @@
             wholePlayer += item + "~";
         }
         <tr onclick="location.href = '@(Url.Action("AddPlayer", "Lineups", new { id = Model.ID, playerinput = ViewBag.NewPLayer, position = i }))'">
+            <td>@ViewBag.RequiredPositions[i]</td>
             @foreach (string detail in currentplayer)
             {
                 <td>
