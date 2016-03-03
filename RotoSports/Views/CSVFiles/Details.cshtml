@@ -34,6 +34,14 @@
         <dd>
             @Html.DisplayFor(model => model.Details)
         </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GameDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GameDate)
+        </dd>
     </dl>
 </div>
 <p>
@@ -85,7 +93,7 @@
                         <li>@Html.ActionLink("Create New Lineup", "Create", "Lineups", new { id = Model.ID }, null)</li>
                     </ul>
                 </div>
-                <a class ="btn btn-success" href="@Url.Action("Index", "Player", new { player = wholePlayer }, null)">Stats <span class="glyphicon glyphicon-stats" aria-hidden="true"></span></a>
+                <a class ="btn btn-success" href="@Url.Action("Index", "Player", new { player = wholePlayer, filepath = Model.ID }, null)">Stats <span class="glyphicon glyphicon-stats" aria-hidden="true"></span></a>
                 <div class="btn-group">
                     <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Star <span class="glyphicon glyphicon-star" aria-hidden="true"></span>

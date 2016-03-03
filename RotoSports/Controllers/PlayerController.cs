@@ -10,21 +10,27 @@ using System.Web;
 using System.Web.Mvc;
 using System.Net.Http.Headers;
 using System.Net.Http;
+using RotoSports.Models;
 
 namespace RotoSports.Controllers
 {
     public class PlayerController : Controller
     {
+        private RotoSportsDB db = new RotoSportsDB();
+        private ApplicationDbContext context = new ApplicationDbContext();
         string PassedPlayer = "";
         string PrimaryKey = "b0c04ca3bc254fa583b272a5ba86977e";
         //string SecondaryKey = "7ad46477502a4416be9c19e420656304";
         string PlayerList = "empty";
+        string PlayerProjections = "empty";
         string CurrentPlayer = "empty";
         string playername = "";
         List<string> splitList = new List<string>();
 
-        public ActionResult Index(string player)
+        public ActionResult Index(string player, string filepath)
         {
+            CSVFiles thisCSVfile = db.CSVFiles.Find(Convert.ToInt32(filepath));
+            string GameDate = thisCSVfile.GameDate;
             if (player == null || player == "")
             {
                 return RedirectToAction("Index", "Home", null);
@@ -72,6 +78,9 @@ namespace RotoSports.Controllers
             ViewBag.InjuryList = injuryList;
             ViewBag.PlayerName = playername;
             ViewBag.PlayerID = playerid;
+            PlayerProjection(GameDate, playerid);
+            List<string> ProjectionList = PlayerProjections.Split(',').ToList();
+            ViewBag.GameProjection = ProjectionList;
             return View();
         }
 
@@ -114,6 +123,24 @@ namespace RotoSports.Controllers
                 }
             }
 
+        }
+
+        public void PlayerProjection(string date, string playerid)
+        {
+            var client = new HttpClient();
+            var queryString = HttpUtility.ParseQueryString(string.Empty);
+            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", PrimaryKey);
+            string[] newId = playerid.Split(':');
+            string baseurl = "https://api.fantasydata.net/nba/v2/JSON/PlayerGameProjectionStatsByPlayer/" + date + "/" + newId[1];
+            var uri = baseurl;
+
+            var response = client.GetAsync(uri);
+
+            var word = response.Result;
+
+            HttpContent requestContent = word.Content;
+            string jsonContent = requestContent.ReadAsStringAsync().Result;
+            PlayerProjections = jsonContent;
         }
     }
 }
