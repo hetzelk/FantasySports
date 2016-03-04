@@ -18,6 +18,39 @@
             </th>
         }
     </tr>
+
+    <tr>
+        @foreach (string detail in ViewBag.Prediction[0])
+            {
+            <td>
+                @detail
+            </td>
+        }
+    </tr>
+    <tr>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>-</td>
+        <td>Best Predicted Player (Top)</td>
+        <td>-</td>
+        <td>Predicted Lineup (Down)</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
     @for (int i = 0; i < @ViewBag.Total; i++)
     {
         string[] currentplayer = ViewBag.Prediction[i];

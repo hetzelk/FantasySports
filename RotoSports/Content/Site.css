@@ -1,7 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-color:#179b28;
+    background-color:#5dbc3a;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -24,7 +24,9 @@ textarea {
     max-width: 280px;
 }
 
-
+p h1 h2 h3 h4 h5 h6{
+    color:white;
+}
 @font-face {
     font-family: Krinkes;
     src: url(Krinkes.ttf);
