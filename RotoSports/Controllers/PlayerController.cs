@@ -29,12 +29,12 @@ namespace RotoSports.Controllers
 
         public ActionResult Index(string player, string filepath)
         {
-            CSVFiles thisCSVfile = db.CSVFiles.Find(Convert.ToInt32(filepath));
-            string GameDate = thisCSVfile.GameDate;
             if (player == null || player == "")
             {
                 return RedirectToAction("Index", "Home", null);
             }
+            CSVFiles thisCSVfile = db.CSVFiles.Find(Convert.ToInt32(filepath));
+            string GameDate = thisCSVfile.GameDate;
             PassedPlayer = player;
             GetAllPlayerData();
             ViewBag.PlayerInfo = CurrentPlayer;
@@ -63,7 +63,7 @@ namespace RotoSports.Controllers
                     }
                     else
                     {
-                        formatted = detail.Replace("}", "");
+                        formatted = formatted.Replace("}", "");
                         injuryList.Add(formatted);
                     }
                 }
@@ -80,7 +80,37 @@ namespace RotoSports.Controllers
             ViewBag.PlayerID = playerid;
             PlayerProjection(GameDate, playerid);
             List<string> ProjectionList = PlayerProjections.Split(',').ToList();
-            ViewBag.GameProjection = ProjectionList;
+            List<string> endProjectionList = new List<string>();
+            List<string> opponentdetails = new List<string>();
+            List<string> shootingstats = new List<string>();
+            foreach (string detail in ProjectionList)
+            {
+                if (detail.Contains("DraftKings")  || detail.Contains("IsGameOver") || detail.Contains("FantasyPoints\"") || detail.Contains("Minutes") || detail.Contains("HomeOrAway") )
+                {
+                    string newdetail = detail.Replace("\"", "");
+                    newdetail = newdetail.Replace("}", "");
+                    endProjectionList.Add(newdetail);
+                }
+                else if (detail.Contains("Opponent"))
+                {
+                    string newdetail = detail.Replace("\"", "");
+                    newdetail = newdetail.Replace("}", "");
+                    opponentdetails.Add(newdetail);
+                }
+                else if (detail.Contains("FieldGoals") || detail.Contains("Pointers") || detail.Contains("Throws") || detail.Contains("Rebounds\"") || detail.Contains("Shooting") || detail.Contains("Points\""))
+                {
+                    string newdetail = detail.Replace("\"", "");
+                    newdetail = newdetail.Replace("}", "");
+                    shootingstats.Add(newdetail);
+                }
+                else
+                {
+                    //do nothing
+                }
+            }
+            ViewBag.Projections = endProjectionList;
+            ViewBag.OpponentDetails = opponentdetails;
+            ViewBag.ShootingsStats = shootingstats;
             return View();
         }
 

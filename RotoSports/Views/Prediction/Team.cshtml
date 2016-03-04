@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="well well-lg">
+    <h1 class="titletext SportsJerseyFont">@ViewBag.FileTitle</h1>
+    <h2>@ViewBag.Sport</h2>
+</div>
+
+<table class="table">
+
+    <tr>
+        @foreach (var title in ViewBag.Titles)
+        {
+            <th>
+                @title
+            </th>
+        }
+    </tr>
+    @for (int i = 0; i < @ViewBag.Total; i++)
+    {
+        string[] currentplayer = ViewBag.Prediction[i];
+        string wholePlayer = "";
+        foreach (string item in currentplayer)
+        {
+            wholePlayer += item + "~";
+        }
+        <tr>
+            @foreach (string detail in currentplayer)
+            {
+                <td>
+                    @detail
+                </td>
+            }            
+        </tr>
+    }
+
+</table>
+
+@ViewBag.SalaryCap

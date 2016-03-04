@@ -163,7 +163,7 @@ namespace RotoSports.Controllers
                 case "NFL": detailsOne = "The Positions required for NFL is QB, RB, RB, WR, WR, WR, TE, FLEX, DST. "; detailsTwo = "The QB cannot be used in the FLEX.\nEvery other position can be used in the FLEX.\nPick one DST.\nMake sure to put the players in the correct positions."; break;
                 case "MLB": detailsOne = "The Positions required for MLB is P, P, C, 1B, 2B, 3B, OF, OF, OF. "; detailsTwo = "The W positions can be RW or LW players."; break;
                 case "PGA": detailsOne = "There are 6 positions required for a PGA lineup. "; detailsTwo = "They can be in any position"; break;
-                case "CFB": detailsOne = "The Positions required for NFL is QB, QB, RB, RB, WR, WR, WR, FLEX, FLEX. "; detailsTwo = "The QB cannot be used in the FLEX.\nThe other 2 positions can be used in the FLEX.\nMake sure to put the players in the correct positions."; break;
+                case "CFB": detailsOne = "The Positions required for CFB is QB, QB, RB, RB, WR, WR, WR, FLEX, FLEX. "; detailsTwo = "The QB cannot be used in the FLEX.\nThe other 2 positions can be used in the FLEX.\nMake sure to put the players in the correct positions."; break;
                 default: detailsOne = "Go back and make sure you did your file and lineup properly"; detailsTwo = "Sorry about that."; break;
             }
             ViewBag.Details1 = detailsOne;

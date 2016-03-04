@@ -29,9 +29,16 @@ textarea {
     font-family: Krinkes;
     src: url(Krinkes.ttf);
 }
+@font-face {
+    font-family: SportsJersey;
+    src: url(sportsjersey.ttf);
+}
 
 .KrinkesFont{
     font-family: Krinkes;
+}
+.SportsJerseyFont{
+    font-family: SportsJersey;
 }
 
 .titletext{
@@ -64,4 +71,8 @@ a{
 
 .bold{
     font-weight:bold;
+}
+
+.spacedout{
+    margin:10px;
 }

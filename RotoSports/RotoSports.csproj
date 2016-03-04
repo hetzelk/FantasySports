@@ -173,6 +173,7 @@
     <Compile Include="Controllers\LineupsController.cs" />
     <Compile Include="Controllers\OAuthBase.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
+    <Compile Include="Controllers\PredictionController.cs" />
     <Compile Include="Controllers\SportsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -230,6 +231,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\Krinkes.ttf" />
+    <Content Include="Content\sportsjersey.ttf" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -289,8 +291,6 @@
     <Content Include="Views\Lineups\Details.cshtml" />
     <Content Include="Views\Lineups\Edit.cshtml" />
     <Content Include="Views\Lineups\Index.cshtml" />
-    <Content Include="Views\Sports\NBA.cshtml" />
-    <Content Include="Views\Sports\NFL.cshtml" />
     <Content Include="Views\Lineups\NBAEditor.cshtml" />
     <Content Include="Views\Lineups\ChangeSport.cshtml" />
     <Content Include="Views\Lineups\Editor.cshtml" />
@@ -302,6 +302,8 @@
     <Content Include="Views\Player\InvalidRequest.cshtml" />
     <Content Include="Views\CSVFiles\PartialPlayer.cshtml" />
     <Content Include="Views\CSVFiles\EmptyPartial.cshtml" />
+    <Content Include="Views\Prediction\Index.cshtml" />
+    <Content Include="Views\Prediction\Team.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="well well-lg">
+    <h1 class="titletext KrinkesFont">RotoSports6</h1>
+    <h2>Pick a file to find a prediciton.</h2>
+</div>
+
+@foreach (var item in ViewBag.UserFiles)
+{
+    string filename = item.Value;
+    <a class="btn btn-info btn-lg spacedout" href="@Url.Action("Team", "Prediction", new { id = item.Key }, null)">@filename</a>
+}
